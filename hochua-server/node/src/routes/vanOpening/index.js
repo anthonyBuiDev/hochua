@@ -1,0 +1,12 @@
+const express = require("express");
+const vanOpeningController = require("../../app/Controller/VanOpeningController");
+const upload = require("../../config/File-Excel/upload");
+const useRouter = express.Router();
+// useRouter.delete("/delete/:id", calculationLakeController.delete);
+// useRouter.post("/update", calculationLakeController.update);
+useRouter.post("/calculator", vanOpeningController.calculator);
+useRouter.get("/get-all-open-and-open", vanOpeningController.getAllOO);
+useRouter.get("/get-all-open-and-close", vanOpeningController.getAllOC);
+useRouter.post("/create-one-open-two-open", upload.single("file") ,vanOpeningController.createOneOpenTwoOpen);
+useRouter.post("/create-one-open-two-close", upload.single("file") ,vanOpeningController.createOneOpenTwoClose);
+module.exports = useRouter;
