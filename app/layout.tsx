@@ -1,16 +1,14 @@
+import { ThemeProvider } from "@/components/darkmode/theme-provider";
+
+
 import type { Metadata } from "next";
-import localFont from "next/font/local";
+import { Roboto } from "next/font/google";
+
 import "./globals.css";
 
-const geistSans = localFont({
-  src: "./fonts/GeistVF.woff",
-  variable: "--font-geist-sans",
-  weight: "100 900",
-});
-const geistMono = localFont({
-  src: "./fonts/GeistMonoVF.woff",
-  variable: "--font-geist-mono",
-  weight: "100 900",
+const roboto = Roboto({
+  weight: ["400", "500", "700", "900"],
+  subsets: ["latin"],
 });
 
 export const metadata: Metadata = {
@@ -23,12 +21,15 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+
+  // const user = await auth();
+
   return (
-    <html lang="en">
-      <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
-      >
-        {children}
+    <html lang="en" suppressHydrationWarning={true}>
+      <body className={roboto.className} suppressHydrationWarning={true}>
+        <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
+          {children}
+        </ThemeProvider>
       </body>
     </html>
   );
