@@ -1,11 +1,9 @@
 
-
 import DashboardNav from "@/components/navigation/dashboard-nav";
-
-
-
+import UserButton from "@/components/navigation/user-button";
 import { auth } from "@/server/auth";
-import { BarChart, Package, PenSquare, Settings, Truck } from "lucide-react";
+import { ArrowBigLeft, Factory, PenSquare, Settings } from "lucide-react";
+import Link from "next/link";
 
 export default async function DashboardLayout({
   children
@@ -16,9 +14,9 @@ export default async function DashboardLayout({
 
   const userLinks = [
     {
-      label: "Orders",
-      path: "/dashboard/orders",
-      icon: <Truck size={16} />,
+      label: "Workspaces",
+      path: "/dashboard/workspaces",
+      icon: <Factory size={16} />,
     },
     {
       label: "Settings",
@@ -31,28 +29,34 @@ export default async function DashboardLayout({
     session?.user.role === "admin"
       ? [
         {
-          label: "Analytics",
-          path: "/dashboard/analytics",
-          icon: <BarChart size={16} />,
-        },
-        {
           label: "Create",
-          path: "/dashboard/add-product",
+          path: "/dashboard/add-workspace",
           icon: <PenSquare size={16} />,
-        },
-        {
-          label: "Products",
-          path: "/dashboard/products",
-          icon: <Package size={16} />,
-        },
+        }
       ]
       : [];
 
   const allLinks = [...adminLinks, ...userLinks];
+
   return (
-    <div><DashboardNav allLinks={allLinks} />
-      {children}</div>
+    <div className="mx-auto max-w-8xl flex-grow px-6 md:px-12">
+      <header className="mt-4">
+        <ul className="flex justify-between">
+          <li>
+            <Link href={"/"} className="font-medium text-sm flex gap-1 items-center">
+              <ArrowBigLeft />
+              Trang chủ
+            </Link >
+          </li>
+          <li>
+            {session && <UserButton expires={session?.expires} user={session?.user} />}
+          </li>
+        </ul>
+      </header>
+      <DashboardNav allLinks={allLinks} />
+      {children}
 
 
+    </div>
   )
 }

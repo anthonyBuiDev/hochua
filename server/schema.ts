@@ -1,4 +1,6 @@
 import { createId } from "@paralleldrive/cuid2"
+import { relations } from "drizzle-orm"
+
 import {
   boolean,
   integer,
@@ -6,7 +8,7 @@ import {
   pgTable,
   primaryKey,
   text,
-  timestamp,
+  timestamp
 } from "drizzle-orm/pg-core"
 
 import type { AdapterAccount } from "next-auth/adapters"
@@ -98,3 +100,49 @@ export const twoFactorTokens = pgTable(
     compoundKey: primaryKey({ columns: [vt.id, vt.token] }),
   })
 )
+
+
+
+export const workspaces = pgTable("workspaces", {
+  id: text("id")
+    .notNull()
+    .primaryKey()
+    .$defaultFn(() => createId()),
+  name: text("name").notNull(),
+  createdAt: timestamp("createdAt").defaultNow().notNull(),
+  updatedAt: timestamp("updatedAt").defaultNow().notNull(),
+  userId: text("userId").references(() => users.id, { onDelete: "cascade" }),
+}
+)
+
+export const WorkspaceRoleEnum = pgEnum("workspaceroles", ["user", "editor", "admin"])
+
+export const members = pgTable("members", {
+  id: text("id")
+    .notNull()
+    .primaryKey()
+    .$defaultFn(() => createId()),
+  userId: text("userId").references(() => users.id, { onDelete: "cascade" }),
+  workspaceId: text("workspaceId").references(() => workspaces.id, { onDelete: "cascade" }),
+  workspaceRoles: WorkspaceRoleEnum("workspaceRoles").default("user"),
+  createdAt: timestamp("createdAt").defaultNow(),
+  updatedAt: timestamp("updatedAt").defaultNow(),
+})
+
+export const workspaceRelations = relations(workspaces, ({ many }) => ({
+  members: many(members, { relationName: "members" }),
+}))
+
+
+export const membersRelations = relations(members, ({ one }) => ({
+  workspaces: one(workspaces, {
+    fields: [members.workspaceId],
+    references: [workspaces.id],
+    relationName: "members",
+  }),
+  user: one(users, {
+    fields: [members.userId],
+    references: [users.id],
+    relationName: "memberUser",
+  }),
+}))
