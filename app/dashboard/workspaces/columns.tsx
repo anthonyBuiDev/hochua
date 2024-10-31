@@ -1,5 +1,6 @@
 "use client";
 
+import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
 import {
   DropdownMenu,
@@ -13,12 +14,10 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from "@/components/ui/tooltip";
-import { ColumnDef, Row } from "@tanstack/react-table";
-import { MoreHorizontal, PlusCircle } from "lucide-react";
-
-import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import { Members } from "@/lib/infer-type";
 import { deleteWorkspace } from "@/server/actions/delete-workspace";
+import { ColumnDef, Row } from "@tanstack/react-table";
+import { MoreHorizontal, PlusCircle } from "lucide-react";
 import { useAction } from "next-safe-action/hooks";
 import Image from "next/image";
 import Link from "next/link";
@@ -48,7 +47,6 @@ const ActionCell = ({ row }: { row: Row<WorkspaceColumn> }) => {
       toast.loading("Deleting Product");
     },
   });
-
 
   const workspace = row.original;
 
@@ -88,7 +86,9 @@ export const columns: ColumnDef<WorkspaceColumn>[] = [
     accessorKey: "members",
     header: "Thành viên",
     cell: ({ row }) => {
+
       const members = row.getValue("members") as Members[];
+
       return (
         <div className="flex gap-2">
           {members.map((member) => (

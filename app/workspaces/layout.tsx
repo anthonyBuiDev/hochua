@@ -4,15 +4,25 @@ import Header from "@/components/navigation/header";
 
 import { SidebarInset, SidebarProvider } from "@/components/ui/sidebar";
 
-export default function DashboardLayout({
+import { getWorkspacesByUserId } from "@/server/actions/get-workspace";
+import { auth } from "@/server/auth";
+import { redirect } from "next/navigation";
+
+export default async function DashboardLayout({
   children
 }: {
   children: React.ReactNode
 }) {
+  const user = await auth();
+  if (!user) redirect("/auth/login");
+
+  const workspaces = await getWorkspacesByUserId(user.user.id)
+
+  // if (!workspaces) redirect("/workspaces/");
 
   return (
     <SidebarProvider>
-      <AppSidebar />
+      <AppSidebar workspaces={workspaces} />
       <SidebarInset>
         <Header />
         <div className='bg-primary-foreground w-full h-full'>

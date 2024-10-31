@@ -13,6 +13,7 @@ import { members, users } from "../schema"
 
 
 
+
 export const deleteMember = actionClient.schema(z.object({ id: z.string() })).action(
   async ({ parsedInput: { id } }) => {
     try {
@@ -20,7 +21,6 @@ export const deleteMember = actionClient.schema(z.object({ id: z.string() })).ac
         .delete(members)
         .where(eq(members.id, id))
         .returning()
-
       const member = await db.query.members.findFirst({
         where: eq(users.id, deleteMember[0].userId!),
         with: {
@@ -29,8 +29,6 @@ export const deleteMember = actionClient.schema(z.object({ id: z.string() })).ac
       })
 
       const nameMember = member?.user?.name;
-
-
       revalidatePath("dashboard/workspaces")
 
       return { success: `Deleted ${nameMember}` }

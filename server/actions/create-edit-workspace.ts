@@ -16,6 +16,7 @@ export const createEditWorkspace = actionClient.schema(WorkspacesSchema).action(
     try {
       const session = await auth();
       const userId = session?.user?.id;
+
       if (id) {
         const currentWorkspace = await db.query.workspaces.findFirst({
           where: eq(workspaces.id, id),

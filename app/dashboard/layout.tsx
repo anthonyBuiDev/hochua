@@ -14,11 +14,6 @@ export default async function DashboardLayout({
 
   const userLinks = [
     {
-      label: "Workspaces",
-      path: "/dashboard/workspaces",
-      icon: <Factory size={16} />,
-    },
-    {
       label: "Settings",
       path: "/dashboard/settings",
       icon: <Settings size={16} />,
@@ -26,13 +21,17 @@ export default async function DashboardLayout({
   ] as const;
 
   const adminLinks =
-    session?.user.role === "admin"
+    session?.user?.roles === "admin"
       ? [
         {
           label: "Create",
           path: "/dashboard/add-workspace",
           icon: <PenSquare size={16} />,
-        }
+        }, {
+          label: "Workspaces",
+          path: "/dashboard/workspaces",
+          icon: <Factory size={16} />,
+        },
       ]
       : [];
 

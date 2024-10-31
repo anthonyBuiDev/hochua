@@ -1,6 +1,6 @@
 "use server"
 
-import { eq } from "drizzle-orm"
+import { eq, inArray } from "drizzle-orm"
 import { db } from ".."
 
 import { members, workspaces } from "../schema"
@@ -17,31 +17,32 @@ export async function getWorkspaceById(id: string) {
     return { error: "Failed to get workspace" }
   }
 }
-export async function getWorkspaces(userId: string) {
-  try {
 
+export async function getWorkspacesByUserId(userId: string) {
+  try {
     const userMembers = await db.query.members.findMany({
-      where: eq(members.userId, userId)
+      where: eq(members.userId, userId),
     });
 
-    const workspaceIds = userMembers.map((member) => member.workspaceId).join(",");
+    const workspaceIds = userMembers.map((member) => member.workspaceId);
 
     const workspaceList = await db.query.workspaces.findMany({
-      where: eq(workspaces.id, workspaceIds),
+      where: inArray(workspaces.id, workspaceIds.filter((id): id is string => id !== null)),
       with: {
         members: {
           with: {
             user: true,
           },
-        },
+        }
       },
       orderBy: (workspaceList, { desc }) => [desc(workspaceList.id)],
     });
 
-    if (!workspaceList) throw new Error("Workspace not found")
-    return { success: workspaceList }
+    if (!workspaceList.length) throw new Error("Workspace not found");
+    return workspaceList;
+
   } catch (error) {
-    console.error(error)
-    return { error: "Failed to get workspace" }
+    console.error(error);
+    throw error;
   }
 }

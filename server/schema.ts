@@ -28,7 +28,7 @@ export const users = pgTable("user", {
   image: text("image"),
   password: text("password"),
   twoFactorEnabled: boolean("twoFactorEnabled").default(false),
-  role: RoleEnum("roles").default("user"),
+  roles: RoleEnum("roles").default("user"),
   customerID: text("customerID"),
 })
 
@@ -115,7 +115,7 @@ export const workspaces = pgTable("workspaces", {
 }
 )
 
-export const WorkspaceRoleEnum = pgEnum("workspaceroles", ["user", "editor", "admin"])
+export const WorkspaceRoleEnum = pgEnum("workspaceRoles", ["user", "editor", "admin"])
 
 export const members = pgTable("members", {
   id: text("id")

@@ -28,3 +28,4 @@ export type InferResultType<
 
 
 export type Members = InferResultType<"members", { user: true }>
+export type Workspaces = InferResultType<"workspaces", { members: { with: { user: true } }; workspaces: true; }>

@@ -11,6 +11,6 @@ export const metadata: Metadata = {
 
 export default async function AddWorkspace() {
   const session = await auth();
-  if (session?.user.role !== "admin") return redirect("/dashboard/settings");
+  if (session?.user.roles !== "admin") return redirect("/dashboard/settings");
   return <WorkspaceForm />;
 }

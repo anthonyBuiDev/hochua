@@ -24,11 +24,8 @@ import { createEditMember } from "@/server/actions/create-edit-member";
 import { deleteMember } from "@/server/actions/delete-member";
 import { getUser } from "@/server/actions/get-user";
 import { MembersSchema } from "@/types/members-schema";
-
-
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Select } from "@radix-ui/react-select";
-
 import { useAction } from "next-safe-action/hooks";
 import { forwardRef, useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
@@ -41,9 +38,6 @@ type MemberProps = {
   workspaceId?: string;
   member?: Members;
 };
-
-
-
 
 export const WorkspaceMembers = forwardRef<HTMLDivElement, MemberProps>(
   ({ children, editMode, workspaceId, member }, ref) => {
@@ -136,7 +130,7 @@ export const WorkspaceMembers = forwardRef<HTMLDivElement, MemberProps>(
         <DialogContent className="max-h-[860px] overflow-y-scroll lg:max-w-screen-lg">
           <DialogHeader>
             <DialogTitle>
-              {editMode ? "Edit" : "Create"} Member for Workspace
+              {editMode ? "Edit" : "Create"} Thành Viên cho Hồ chứa
             </DialogTitle>
             <DialogDescription>
               Manage your product variants here. You can add tags, images, and
