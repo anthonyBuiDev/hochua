@@ -1,9 +1,9 @@
 import { ThemeProvider } from "@/components/darkmode/theme-provider";
 
-
 import type { Metadata } from "next";
 import { Roboto } from "next/font/google";
 
+import { Toaster } from "@/components/ui/sonner";
 import "./globals.css";
 
 const roboto = Roboto({
@@ -21,13 +21,14 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-
-  // const user = await auth();
-
   return (
     <html lang="en" suppressHydrationWarning={true}>
-      <body className={`${roboto.className} bg-primary-foreground`} suppressHydrationWarning={true} >
+      <body
+        className={`${roboto.className} bg-primary-foreground`}
+        suppressHydrationWarning={true}
+      >
         <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
+          <Toaster richColors />
           {children}
         </ThemeProvider>
       </body>

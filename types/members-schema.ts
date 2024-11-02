@@ -8,6 +8,6 @@ export const MembersSchema = z.object({
   editMode: z.boolean(),
   workspaceId: z.string(),
   userId: z.string(),
-})
+});
 
-export type zMembersSchema = z.infer<typeof MembersSchema>
+export type zMembersSchema = z.infer<typeof MembersSchema>;

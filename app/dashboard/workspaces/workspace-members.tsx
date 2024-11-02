@@ -11,14 +11,18 @@ import {
 import {
   Form,
   FormControl,
-
   FormField,
   FormItem,
   FormLabel,
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import { SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import {
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 import { Members } from "@/lib/infer-type";
 import { createEditMember } from "@/server/actions/create-edit-member";
 import { deleteMember } from "@/server/actions/delete-member";
@@ -107,9 +111,9 @@ export const WorkspaceMembers = forwardRef<HTMLDivElement, MemberProps>(
 
     const handleUserIdChange = async (userId: string) => {
       if (userId) {
-        const user = await getUser(userId)
+        const user = await getUser(userId);
         if (user.success) {
-          setUserName(user.success.name)
+          setUserName(user.success.name);
         } else {
           toast.error("Không tìm thấy người dùng!");
         }
@@ -118,15 +122,13 @@ export const WorkspaceMembers = forwardRef<HTMLDivElement, MemberProps>(
       }
     };
 
-
     function onSubmit(values: z.infer<typeof MembersSchema>) {
       execute(values);
-
     }
 
     return (
       <Dialog open={open} onOpenChange={setOpen}>
-        <DialogTrigger >{children}</DialogTrigger>
+        <DialogTrigger>{children}</DialogTrigger>
         <DialogContent className="max-h-[860px] overflow-y-scroll lg:max-w-screen-lg">
           <DialogHeader>
             <DialogTitle>
@@ -173,9 +175,12 @@ export const WorkspaceMembers = forwardRef<HTMLDivElement, MemberProps>(
                 render={({ field }) => (
                   <FormItem>
                     <FormLabel>Quyền</FormLabel>
-                    <Select onValueChange={field.onChange} defaultValue={field.value}>
+                    <Select
+                      onValueChange={field.onChange}
+                      defaultValue={field.value}
+                    >
                       <FormControl>
-                        <SelectTrigger >
+                        <SelectTrigger>
                           <SelectValue placeholder="Select a verified email to display" />
                         </SelectTrigger>
                       </FormControl>
@@ -189,6 +194,7 @@ export const WorkspaceMembers = forwardRef<HTMLDivElement, MemberProps>(
                   </FormItem>
                 )}
               />
+
               <div className="flex items-center justify-center gap-4">
                 {editMode && member && (
                   <Button

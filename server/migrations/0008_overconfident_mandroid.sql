@@ -1,1 +1,0 @@
-ALTER TABLE "members" ALTER COLUMN "workspaceRole" SET DATA TYPE workspaceRole;

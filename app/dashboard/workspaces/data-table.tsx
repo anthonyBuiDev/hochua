@@ -5,7 +5,6 @@ import {
   Card,
   CardContent,
   CardDescription,
-
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
@@ -40,7 +39,7 @@ export function DataTable<TData, TValue>({
   columns,
   data,
 }: DataTableProps<TData, TValue>) {
-  const [sorting, setSorting] = useState<SortingState>([]);
+  const [sorting] = useState<SortingState>([]);
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
 
   const table = useReactTable({
@@ -61,9 +60,7 @@ export function DataTable<TData, TValue>({
       <Card>
         <CardHeader>
           <CardTitle>Hồ Chứa</CardTitle>
-          <CardDescription>
-            Quản lý hồ chứa
-          </CardDescription>
+          <CardDescription>Quản lý hồ chứa</CardDescription>
         </CardHeader>
         <CardContent>
           <div>
@@ -78,7 +75,7 @@ export function DataTable<TData, TValue>({
                 }
               />
             </div>
-            <Table>
+            <Table className="mt-10">
               <TableHeader>
                 {table.getHeaderGroups().map((headerGroup) => (
                   <TableRow key={headerGroup.id}>

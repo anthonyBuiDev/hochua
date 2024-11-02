@@ -1,7 +1,6 @@
 import { auth } from "@/server/auth";
 import { redirect } from "next/navigation";
 
-
 import { Metadata } from "next";
 import WorkspaceForm from "./workspace-form";
 

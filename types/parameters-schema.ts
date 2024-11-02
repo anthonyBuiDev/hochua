@@ -1,12 +1,13 @@
-import * as z from "zod"
+import * as z from "zod";
+
 
 export const ParameterSchema = z.object({
   id: z.number().optional(),
-  tt: z.union([z.number(), z.string()]),
-  title: z.string(),
-  unit: z.string(),
-  value: z.union([z.number(), z.string()]),
-})
+  tt: z.string().optional(),
+  title: z.string().optional(),
+  unit: z.string().optional(),
+  value: z.string().optional(),
+  workspaceId: z.string(),
+});
 
-export type zParameterSchema = z.infer<typeof ParameterSchema>
-
+export type zParameterSchema = z.infer<typeof ParameterSchema>;

@@ -1,18 +1,15 @@
 "use client";
-
 import { Button } from "@/components/ui/button";
 import {
   Card,
   CardContent,
   CardDescription,
-
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
 import {
   Form,
   FormControl,
-
   FormField,
   FormItem,
   FormLabel,
@@ -22,7 +19,6 @@ import { Input } from "@/components/ui/input";
 import { createEditWorkspace } from "@/server/actions/create-edit-workspace";
 import { getWorkspaceById } from "@/server/actions/get-workspace";
 import { WorkspacesSchema, zWorkspacesSchema } from "@/types/workspaces-schema";
-
 
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useAction } from "next-safe-action/hooks";
@@ -96,9 +92,7 @@ export default function WorkspaceForm() {
       <CardHeader>
         <CardTitle>{editMode ? "Sửa hồ chứa" : "Tạo Hồ Chứa"}</CardTitle>
         <CardDescription>
-          {editMode
-            ? "Sửa tên hồ chứa"
-            : "Tạo hồ chứa mới"}
+          {editMode ? "Sửa tên hồ chứa" : "Tạo hồ chứa mới"}
         </CardDescription>
       </CardHeader>
       <CardContent>
@@ -111,7 +105,7 @@ export default function WorkspaceForm() {
                 <FormItem>
                   <FormLabel>Tên Hồ chứa:</FormLabel>
                   <FormControl>
-                    <Input  {...field} />
+                    <Input {...field} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>

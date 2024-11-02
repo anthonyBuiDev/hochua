@@ -17,7 +17,6 @@ import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 
-
 export default function UserButton({ user }: Session) {
   const { setTheme, theme } = useTheme();
   const [checked, setChecked] = useState(false);
@@ -80,14 +79,11 @@ export default function UserButton({ user }: Session) {
             onClick={() => router.push("/dashboard/settings")}
             className="group cursor-pointer py-2 font-medium  ease-in-out "
           >
-
             <Settings
               size={14}
               className="mr-3 transition-all duration-300 ease-in-out group-hover:rotate-180"
             />
             Settings
-
-
           </DropdownMenuItem>
           {theme && (
             <DropdownMenuItem className="cursor-pointer py-2 font-medium  ease-in-out">
@@ -122,7 +118,7 @@ export default function UserButton({ user }: Session) {
           )}
           <DropdownMenuItem
             onClick={() => {
-              signOut({ callbackUrl: "/auth/login" })
+              signOut({ callbackUrl: "/auth/login" });
             }}
             className="group cursor-pointer py-2 font-medium focus:bg-destructive/30 "
           >
@@ -133,6 +129,6 @@ export default function UserButton({ user }: Session) {
             Sign out
           </DropdownMenuItem>
         </DropdownMenuContent>
-      </DropdownMenu >
+      </DropdownMenu>
     );
 }

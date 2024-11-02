@@ -1,18 +1,22 @@
 import { auth } from "@/server/auth";
 import { LogIn } from "lucide-react";
 import Link from "next/link";
-import { Breadcrumb, BreadcrumbItem, BreadcrumbLink, BreadcrumbList, BreadcrumbPage, BreadcrumbSeparator } from "../ui/breadcrumb";
+import {
+  Breadcrumb,
+  BreadcrumbItem,
+  BreadcrumbLink,
+  BreadcrumbList,
+  BreadcrumbPage,
+  BreadcrumbSeparator,
+} from "../ui/breadcrumb";
 import { Button } from "../ui/button";
 import { Separator } from "../ui/separator";
 import { SidebarTrigger } from "../ui/sidebar";
 import UserButton from "./user-button";
 
-
-
 export default async function Header() {
   const session = await auth();
   return (
-
     <header className="p-4 border-b-2">
       <nav>
         <ul className="flex items-center justify-between gap-4 md:gap-8">
@@ -22,9 +26,7 @@ export default async function Header() {
             <Breadcrumb>
               <BreadcrumbList>
                 <BreadcrumbItem className="hidden md:block">
-                  <BreadcrumbLink href="/workspaces">
-                    Trang chủ
-                  </BreadcrumbLink>
+                  <BreadcrumbLink href="/workspaces">Trang chủ</BreadcrumbLink>
                 </BreadcrumbItem>
                 <BreadcrumbSeparator className="hidden md:block" />
                 <BreadcrumbItem>
@@ -50,5 +52,5 @@ export default async function Header() {
         </ul>
       </nav>
     </header>
-  )
+  );
 }

@@ -24,8 +24,6 @@ import Link from "next/link";
 import { toast } from "sonner";
 import { WorkspaceMembers } from "./workspace-members";
 
-
-
 type WorkspaceColumn = {
   name: string;
   members: Members[];
@@ -86,7 +84,6 @@ export const columns: ColumnDef<WorkspaceColumn>[] = [
     accessorKey: "members",
     header: "Thành viên",
     cell: ({ row }) => {
-
       const members = row.getValue("members") as Members[];
 
       return (
@@ -95,7 +92,7 @@ export const columns: ColumnDef<WorkspaceColumn>[] = [
             <div key={member.id}>
               <TooltipProvider>
                 <Tooltip>
-                  <TooltipTrigger asChild >
+                  <TooltipTrigger asChild>
                     <WorkspaceMembers
                       editMode={true}
                       workspaceId={member.workspaceId!}
@@ -131,7 +128,10 @@ export const columns: ColumnDef<WorkspaceColumn>[] = [
             <Tooltip>
               <TooltipTrigger asChild>
                 <span>
-                  <WorkspaceMembers workspaceId={row.original.id} editMode={false}>
+                  <WorkspaceMembers
+                    workspaceId={row.original.id}
+                    editMode={false}
+                  >
                     <PlusCircle className="h-7 w-7" />
                   </WorkspaceMembers>
                 </span>

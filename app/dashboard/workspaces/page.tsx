@@ -1,4 +1,3 @@
-
 import { db } from "@/server";
 import { auth } from "@/server/auth";
 import { Metadata } from "next";
@@ -18,7 +17,7 @@ export default async function Workspaces() {
   }
 
   if (user.user?.roles !== "admin") {
-    return redirect("/dashboard/settings")
+    return redirect("/dashboard/settings");
   }
 
   const workspaces = await db.query.workspaces.findMany({
@@ -31,7 +30,6 @@ export default async function Workspaces() {
     },
     orderBy: (workspaces, { desc }) => [desc(workspaces.id)],
   });
-
 
   if (!workspaces) throw new Error("No workspaces found");
   const dataTable = workspaces.map((workspace) => {
@@ -48,11 +46,11 @@ export default async function Workspaces() {
       members: workspace.members,
     };
   });
-  console.log(dataTable)
+
   if (!dataTable) throw new Error("No data found");
   return (
     <div>
       <DataTable columns={columns} data={dataTable} />
-    </div >
+    </div>
   );
 }

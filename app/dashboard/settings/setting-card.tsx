@@ -8,7 +8,6 @@ import {
   Card,
   CardContent,
   CardDescription,
-
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
@@ -25,7 +24,6 @@ import { Input } from "@/components/ui/input";
 import { Switch } from "@/components/ui/switch";
 import { settings } from "@/server/actions/settings";
 import { SettingsSchema } from "@/types/settings-schema";
-
 
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Session } from "next-auth";

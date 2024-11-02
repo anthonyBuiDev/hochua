@@ -1,4 +1,4 @@
-import * as z from "zod"
+import * as z from "zod";
 
 export const RegisterSchema = z.object({
   email: z.string().email(),
@@ -8,4 +8,4 @@ export const RegisterSchema = z.object({
   name: z
     .string()
     .min(4, { message: "Please add a name with at least 4 characters" }),
-})
+});

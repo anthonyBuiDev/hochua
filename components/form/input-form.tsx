@@ -1,13 +1,7 @@
-'use client';
+"use client";
 
-
-import { Button } from '@/components/ui/button';
-import {
-  Card,
-  CardContent,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import {
   Form,
   FormControl,
@@ -15,15 +9,17 @@ import {
   FormItem,
   FormLabel,
   FormMessage,
-} from '@/components/ui/form';
-import { Input } from '@/components/ui/input';
-import { zodResolver } from '@hookform/resolvers/zod';
-import { useState } from 'react';
-import { useForm } from 'react-hook-form';
-import { z } from 'zod';
+} from "@/components/ui/form";
+import { Input } from "@/components/ui/input";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { useState } from "react";
+import { useForm } from "react-hook-form";
+import { z } from "zod";
 
 const formSchema = z.object({
-  heightZ: z.string().min(1, { message: "Mực nước hồ hiện tại không được để trống" }),
+  heightZ: z
+    .string()
+    .min(1, { message: "Mực nước hồ hiện tại không được để trống" }),
   acreageF: z.string().optional(),
   capacityV: z.string().optional(),
   // luuluong: z.string().min(1, { message: "Lưu lượng cần xả không được để trống" }),
@@ -41,66 +37,70 @@ export function InputForm() {
   const [lakeResult, setLakeResult] = useState({ F: null, V: null });
   const [vanResult, setVanResult] = useState({ q1: null, q2: null, sum: null });
 
-
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      heightZ: '',
-      luuluong: '',
-      a1: '',
-      a2: '',
+      heightZ: "",
+      luuluong: "",
+      a1: "",
+      a2: "",
     },
   });
 
-
   async function onSubmit(values: z.infer<typeof formSchema>) {
-
     try {
-      const response = await fetch('http://localhost:5555/api/v1/calculation-lake/calculator', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
+      const response = await fetch(
+        "http://localhost:5555/api/v1/calculation-lake/calculator",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            heightZ: parseFloat(values.heightZ),
+          }),
         },
-        body: JSON.stringify({
-          heightZ: parseFloat(values.heightZ),
-
-        }),
-      });
+      );
 
       if (!response.ok) {
-        throw new Error('Có lỗi xảy ra trong quá trình tính toán');
+        throw new Error("Có lỗi xảy ra trong quá trình tính toán");
       }
 
       const lakeData = await response.json();
 
       setLakeResult({ F: lakeData.F, V: lakeData.V });
 
-      const vanResponse = await fetch('http://localhost:5555/api/v1/van-opening/calculator', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
+      const vanResponse = await fetch(
+        "http://localhost:5555/api/v1/van-opening/calculator",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            heightZ: parseFloat(values.heightZ),
+            a1: parseFloat(values.a1),
+            a2: parseFloat(values.a2),
+          }),
         },
-        body: JSON.stringify({
-          heightZ: parseFloat(values.heightZ),
-          a1: parseFloat(values.a1),
-          a2: parseFloat(values.a2),
-        }),
-      });
+      );
 
       if (!vanResponse.ok) {
-        throw new Error('Có lỗi xảy ra trong quá trình tính toán từ van-opening');
+        throw new Error(
+          "Có lỗi xảy ra trong quá trình tính toán từ van-opening",
+        );
       }
 
       const vanData = await vanResponse.json();
-      console.log(vanData)
-      setVanResult({ q1: vanData.q1, q2: vanData.q2, sum: vanData.sum })
+      console.log(vanData);
+      setVanResult({ q1: vanData.q1, q2: vanData.q2, sum: vanData.sum });
     } catch (err) {
-      console.log(err)
+      console.log(err);
     }
   }
 
   return (
-    <Form {...form} >
+    <Form {...form}>
       <form onSubmit={form.handleSubmit(onSubmit)}>
         <div className="grid grid-cols-3 gap-4">
           <Card>
@@ -112,9 +112,11 @@ export function InputForm() {
                 control={form.control}
                 name="heightZ"
                 render={({ field }) => (
-                  <FormItem >
-                    <div className='flex justify-center items-center gap-1 '>
-                      <FormLabel className="w-1/2">Mực nước hồ hiện tại</FormLabel>
+                  <FormItem>
+                    <div className="flex justify-center items-center gap-1 ">
+                      <FormLabel className="w-1/2">
+                        Mực nước hồ hiện tại
+                      </FormLabel>
                       <FormControl className="w-1/2">
                         <Input placeholder="" {...field} />
                       </FormControl>
@@ -128,10 +130,14 @@ export function InputForm() {
                 name="acreageF"
                 render={() => (
                   <FormItem>
-                    <div className='flex justify-center items-center gap-1'>
-                      <FormLabel className="w-1/2">Diện tích mặt nước</FormLabel>
+                    <div className="flex justify-center items-center gap-1">
+                      <FormLabel className="w-1/2">
+                        Diện tích mặt nước
+                      </FormLabel>
                       <div className="w-1/2 p-2 border rounded-md">
-                        {lakeResult.F !== null ? lakeResult.F : "Chưa có dữ liệu"}
+                        {lakeResult.F !== null
+                          ? lakeResult.F
+                          : "Chưa có dữ liệu"}
                       </div>
                     </div>
                   </FormItem>
@@ -142,10 +148,14 @@ export function InputForm() {
                 name="capacityV"
                 render={() => (
                   <FormItem>
-                    <div className='flex justify-center items-center gap-2'>
-                      <FormLabel className="w-1/2">Dung tích hồ hiện tại</FormLabel>
+                    <div className="flex justify-center items-center gap-2">
+                      <FormLabel className="w-1/2">
+                        Dung tích hồ hiện tại
+                      </FormLabel>
                       <div className="w-1/2 p-2 border rounded-md">
-                        {lakeResult.V !== null ? lakeResult.V : "Chưa có dữ liệu"}
+                        {lakeResult.V !== null
+                          ? lakeResult.V
+                          : "Chưa có dữ liệu"}
                       </div>
                     </div>
                   </FormItem>
@@ -162,8 +172,8 @@ export function InputForm() {
                 control={form.control}
                 name="luuluong"
                 render={({ field }) => (
-                  <FormItem >
-                    <div className='flex justify-center items-center gap-1 '>
+                  <FormItem>
+                    <div className="flex justify-center items-center gap-1 ">
                       <FormLabel className="w-1/2">Lưu lượng cần xả</FormLabel>
                       <FormControl className="w-1/2">
                         <Input placeholder="" {...field} />
@@ -179,13 +189,14 @@ export function InputForm() {
                 name="domovan1"
                 render={({ field }) => (
                   <FormItem>
-                    <div className='flex justify-center items-center gap-1 '>
-                      <FormLabel className="w-1/2">Độ mở cửa van số 1</FormLabel>
+                    <div className="flex justify-center items-center gap-1 ">
+                      <FormLabel className="w-1/2">
+                        Độ mở cửa van số 1
+                      </FormLabel>
                       <FormControl className="w-1/2">
-                        <Input  {...field} readOnly />
+                        <Input {...field} readOnly />
                       </FormControl>
                     </div>
-
                   </FormItem>
                 )}
               />
@@ -193,12 +204,14 @@ export function InputForm() {
                 control={form.control}
                 name="domovan2"
                 render={({ field }) => (
-                  <FormItem >
-                    <div className='flex justify-center items-center gap-2' >
-                      <FormLabel className="w-1/2">Độ mở cửa van số 2</FormLabel>
+                  <FormItem>
+                    <div className="flex justify-center items-center gap-2">
+                      <FormLabel className="w-1/2">
+                        Độ mở cửa van số 2
+                      </FormLabel>
                       <FormControl className="w-1/2">
-                        <Input  {...field} readOnly />
-                      </FormControl  >
+                        <Input {...field} readOnly />
+                      </FormControl>
                     </div>
                   </FormItem>
                 )}
@@ -214,9 +227,11 @@ export function InputForm() {
                 control={form.control}
                 name="a1"
                 render={({ field }) => (
-                  <FormItem >
-                    <div className='flex justify-center items-center gap-1 '>
-                      <FormLabel className="w-1/2">Độ mở cửa van số 1</FormLabel>
+                  <FormItem>
+                    <div className="flex justify-center items-center gap-1 ">
+                      <FormLabel className="w-1/2">
+                        Độ mở cửa van số 1
+                      </FormLabel>
                       <FormControl className="w-1/2">
                         <Input placeholder="" {...field} />
                       </FormControl>
@@ -229,9 +244,11 @@ export function InputForm() {
                 control={form.control}
                 name="a2"
                 render={({ field }) => (
-                  <FormItem >
-                    <div className='flex justify-center items-center gap-1 '>
-                      <FormLabel className="w-1/2">Độ mở cửa van số 2</FormLabel>
+                  <FormItem>
+                    <div className="flex justify-center items-center gap-1 ">
+                      <FormLabel className="w-1/2">
+                        Độ mở cửa van số 2
+                      </FormLabel>
                       <FormControl className="w-1/2">
                         <Input placeholder="" {...field} />
                       </FormControl>
@@ -246,10 +263,14 @@ export function InputForm() {
                 name="capacityV"
                 render={() => (
                   <FormItem>
-                    <div className='flex justify-center items-center gap-2'>
-                      <FormLabel className="w-1/2">Lưu lượng xả qua cửa số 1</FormLabel>
+                    <div className="flex justify-center items-center gap-2">
+                      <FormLabel className="w-1/2">
+                        Lưu lượng xả qua cửa số 1
+                      </FormLabel>
                       <div className="w-1/2 p-2 border rounded-md">
-                        {vanResult.q1 !== null ? vanResult.q1 : "Chưa có dữ liệu"}
+                        {vanResult.q1 !== null
+                          ? vanResult.q1
+                          : "Chưa có dữ liệu"}
                       </div>
                     </div>
                   </FormItem>
@@ -260,10 +281,14 @@ export function InputForm() {
                 name="capacityV"
                 render={() => (
                   <FormItem>
-                    <div className='flex justify-center items-center gap-2'>
-                      <FormLabel className="w-1/2">Lưu lượng xả qua cửa số 2</FormLabel>
+                    <div className="flex justify-center items-center gap-2">
+                      <FormLabel className="w-1/2">
+                        Lưu lượng xả qua cửa số 2
+                      </FormLabel>
                       <div className="w-1/2 p-2 border rounded-md">
-                        {vanResult.q2 !== null ? vanResult.q2 : "Chưa có dữ liệu"}
+                        {vanResult.q2 !== null
+                          ? vanResult.q2
+                          : "Chưa có dữ liệu"}
                       </div>
                     </div>
                   </FormItem>
@@ -274,16 +299,19 @@ export function InputForm() {
                 name="capacityV"
                 render={() => (
                   <FormItem>
-                    <div className='flex justify-center items-center gap-2'>
-                      <FormLabel className="w-1/2">Tổng lượng xả qua tràn</FormLabel>
+                    <div className="flex justify-center items-center gap-2">
+                      <FormLabel className="w-1/2">
+                        Tổng lượng xả qua tràn
+                      </FormLabel>
                       <div className="w-1/2 p-2 border rounded-md">
-                        {vanResult.sum !== null ? vanResult.sum : "Chưa có dữ liệu"}
+                        {vanResult.sum !== null
+                          ? vanResult.sum
+                          : "Chưa có dữ liệu"}
                       </div>
                     </div>
                   </FormItem>
                 )}
               />
-
             </CardContent>
           </Card>
         </div>

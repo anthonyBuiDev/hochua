@@ -8,11 +8,9 @@ import { db } from "..";
 import { auth } from "../auth";
 import { members, workspaces } from "../schema";
 
-
-
-
-export const createEditWorkspace = actionClient.schema(WorkspacesSchema).action(
-  async ({ parsedInput: { name, id } }) => {
+export const createEditWorkspace = actionClient
+  .schema(WorkspacesSchema)
+  .action(async ({ parsedInput: { name, id } }) => {
     try {
       const session = await auth();
       const userId = session?.user?.id;
@@ -28,7 +26,9 @@ export const createEditWorkspace = actionClient.schema(WorkspacesSchema).action(
           .where(eq(workspaces.id, id))
           .returning();
         revalidatePath("/dashboard/workspaces");
-        return { success: `Workspace ${editedWorkspace[0].name} has been edited` };
+        return {
+          success: `Workspace ${editedWorkspace[0].name} has been edited`,
+        };
       }
       if (!id) {
         const newWorkspace = await db
@@ -38,19 +38,18 @@ export const createEditWorkspace = actionClient.schema(WorkspacesSchema).action(
 
         const workspaceId = newWorkspace[0].id;
 
-        await db
-          .insert(members)
-          .values({
-            userId,
-            workspaceId,
-            workspaceRoles: "admin"
-          });
+        await db.insert(members).values({
+          userId,
+          workspaceId,
+          workspaceRoles: "admin",
+        });
         revalidatePath("/dashboard/workspaces");
-        return { success: `Workspace ${newWorkspace[0].name} has been created` };
+        return {
+          success: `Workspace ${newWorkspace[0].name} has been created`,
+        };
       }
     } catch (error) {
       console.log(error);
       return { error: "Failed to create Workspace" };
     }
-  },
-);
+  });

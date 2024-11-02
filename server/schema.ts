@@ -7,6 +7,7 @@ import {
   pgEnum,
   pgTable,
   primaryKey,
+  serial,
   text,
   timestamp
 } from "drizzle-orm/pg-core"
@@ -129,10 +130,100 @@ export const members = pgTable("members", {
   updatedAt: timestamp("updatedAt").defaultNow(),
 })
 
-export const workspaceRelations = relations(workspaces, ({ many }) => ({
+
+export const parameters = pgTable("parameters", {
+  id: serial("id").primaryKey(),
+  title: text("title"),
+  unit: text("unit"),
+  value: text("value"),
+  tt: text("tt"),
+  workspaceId: text("workspaceId").references(() => workspaces.id, {
+    onDelete: "cascade",
+  }),
+  createdAt: timestamp("createdAt").defaultNow().notNull(),
+  updatedAt: timestamp("updatedAt").defaultNow().notNull(),
+});
+
+export const waterLevel = pgTable("waterLevels", {
+  id: serial("id").primaryKey(),
+  date: text("date"),
+  limitLevel: text("limitLevel"),
+  emergencyLevel: text("emergencyLevel"),
+  workspaceId: text("workspaceId").references(() => workspaces.id, {
+    onDelete: "cascade",
+  }),
+  createdAt: timestamp("createdAt").defaultNow().notNull(),
+  updatedAt: timestamp("updatedAt").defaultNow().notNull(),
+});
+
+export const lakeCharacteristics = pgTable("lakeCharacteristics", {
+  id: serial("id").primaryKey(),
+  elevation: text("elevation"),
+  surfaceArea: text("surfaceArea"),
+  volume: text("volume"),
+  workspaceId: text("workspaceId").references(() => workspaces.id, {
+    onDelete: "cascade",
+  }),
+  createdAt: timestamp("createdAt").defaultNow().notNull(),
+  updatedAt: timestamp("updatedAt").defaultNow().notNull(),
+});
+
+export const waterLevelDischarge = pgTable(
+  "waterLevelDischarge",
+  {
+    id: serial("id").primaryKey(),
+    waterLevel: text("waterLevel"),
+    gateOpening: text("gateOpening"),
+    dischargeRate: text("dischargeRate"),
+    status: text("status"),
+    workspaceId: text("workspaceId").references(() => workspaces.id, {
+      onDelete: "cascade",
+    }),
+    createdAt: timestamp("createdAt").defaultNow().notNull(),
+    updatedAt: timestamp("updatedAt").defaultNow().notNull(),
+  },
+);
+
+
+export const workspaceRelations = relations(workspaces, ({ many, one }) => ({
   members: many(members, { relationName: "members" }),
+  parameter: one(parameters),
+  lakeCharacteristics: one(lakeCharacteristics),
+  waterLevelDischarge: one(waterLevelDischarge),
+  waterLevel: one(waterLevel),
 }))
 
+export const parameterWorkspaceRelations = relations(parameters, ({ one }) => ({
+  workspaces: one(workspaces, {
+    fields: [parameters.workspaceId],
+    references: [workspaces.id],
+    relationName: "parameterWorkspace",
+  }),
+}))
+
+export const lakeCharacteristicsWorkspaceRelations = relations(lakeCharacteristics, ({ one }) => ({
+  workspaces: one(workspaces, {
+    fields: [lakeCharacteristics.workspaceId],
+    references: [workspaces.id],
+    relationName: "lakeCharacteristicsWorkspace",
+  }),
+}))
+
+export const waterLevelDischargeWorkspaceRelations = relations(waterLevelDischarge, ({ one }) => ({
+  workspaces: one(workspaces, {
+    fields: [waterLevelDischarge.workspaceId],
+    references: [workspaces.id],
+    relationName: "waterLevelDischargeWorkspace",
+  }),
+}))
+
+export const waterLevelWorkspaceRelations = relations(waterLevel, ({ one }) => ({
+  workspaces: one(workspaces, {
+    fields: [waterLevel.workspaceId],
+    references: [workspaces.id],
+    relationName: "waterLevelWorkspace",
+  }),
+}))
 
 export const membersRelations = relations(members, ({ one }) => ({
   workspaces: one(workspaces, {
@@ -146,3 +237,5 @@ export const membersRelations = relations(members, ({ one }) => ({
     relationName: "memberUser",
   }),
 }))
+
+

@@ -1,4 +1,4 @@
-import { z } from "zod"
+import { z } from "zod";
 
 export const SettingsSchema = z
   .object({
@@ -12,9 +12,9 @@ export const SettingsSchema = z
   .refine(
     (data) => {
       if (data.password && !data.newPassword) {
-        return false
+        return false;
       }
-      return true
+      return true;
     },
-    { message: "New password is required", path: ["newPassword"] }
-  )
+    { message: "New password is required", path: ["newPassword"] },
+  );
