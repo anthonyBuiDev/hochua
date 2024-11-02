@@ -1,12 +1,14 @@
 import type { Config } from "tailwindcss";
-
-const config: Config = {
+import { withUt } from "uploadthing/tw";
+const config = withUt({
   darkMode: ["class"],
   content: [
-    "./pages/**/*.{js,ts,jsx,tsx,mdx}",
-    "./components/**/*.{js,ts,jsx,tsx,mdx}",
-    "./app/**/*.{js,ts,jsx,tsx,mdx}",
+    "./pages/**/*.{ts,tsx}",
+    "./components/**/*.{ts,tsx}",
+    "./app/**/*.{ts,tsx}",
+    "./src/**/*.{ts,tsx}",
   ],
+  prefix: "",
   theme: {
     container: {
       center: true,
@@ -88,5 +90,5 @@ const config: Config = {
     },
   },
   plugins: [require("tailwindcss-animate")],
-};
+}) satisfies Config
 export default config;
