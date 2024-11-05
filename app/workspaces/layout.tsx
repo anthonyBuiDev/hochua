@@ -2,8 +2,9 @@ import { AppSidebar } from "@/components/navigation/app-sidebar";
 import Header from "@/components/navigation/header";
 
 import { SidebarInset, SidebarProvider } from "@/components/ui/sidebar";
+import { getWorkspacesByUserId } from "@/server/actions/workspaces/get-workspace";
 
-import { getWorkspacesByUserId } from "@/server/actions/get-workspace";
+
 import { auth } from "@/server/auth";
 import { redirect } from "next/navigation";
 
@@ -16,9 +17,6 @@ export default async function DashboardLayout({
   if (!user) redirect("/auth/login");
 
   const workspaces = await getWorkspacesByUserId(user.user.id);
-
-  if (!workspaces) redirect("/workspaces/add-workspace");
-
 
   return (
     <div className="min-h-screen">

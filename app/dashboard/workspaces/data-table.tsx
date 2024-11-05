@@ -66,7 +66,7 @@ export function DataTable<TData, TValue>({
           <div>
             <div>
               <Input
-                placeholder="Filter Products"
+                placeholder="Nhập tên hồ chứa để tìm"
                 value={
                   (table.getColumn("name")?.getFilterValue() as string) ?? ""
                 }
@@ -117,7 +117,7 @@ export function DataTable<TData, TValue>({
                       colSpan={columns.length}
                       className="h-24 text-center"
                     >
-                      No results.
+                      Không có dữ liệu
                     </TableCell>
                   </TableRow>
                 )}

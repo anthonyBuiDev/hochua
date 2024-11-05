@@ -1,9 +1,9 @@
 "use server";
 
+import { db } from "@/server";
+import { members, workspaces } from "@/server/schema";
 import { eq, inArray } from "drizzle-orm";
-import { db } from "..";
 
-import { members, workspaces } from "../schema";
 
 export async function getWorkspaceById(id: string) {
   try {

@@ -7,14 +7,6 @@ import { columns } from "./columns";
 
 import ParameterForm from "./parameters-form";
 
-import { Button } from "@/components/ui/button";
-import {
-  Dialog,
-  DialogContent,
-  DialogHeader,
-  DialogTitle,
-  DialogTrigger,
-} from "@/components/ui/dialog";
 import { DataTable } from "./data-table";
 
 export default async function ThongSo({
@@ -33,24 +25,12 @@ export default async function ThongSo({
     where: eq(parameters.workspaceId, workspaceId),
   });
 
-  if (!parametersList) throw new Error("No parameter found");
+  if (!parametersList) throw new Error("Không tìm thấy thông số");
 
 
   return (
     <div className="w-full lg:max-w-7xl">
-      <Dialog>
-        <DialogTrigger asChild>
-          <Button className="mb-5">Quản lý</Button>
-        </DialogTrigger>
-        <DialogContent>
-          <DialogHeader>
-            <DialogTitle>Thêm thông số</DialogTitle>
-            <div className="flex justify-center items-center">
-              <ParameterForm />
-            </div>
-          </DialogHeader>
-        </DialogContent>
-      </Dialog>
+      <ParameterForm />
       <DataTable columns={columns} data={parametersList} />
     </div>
   );

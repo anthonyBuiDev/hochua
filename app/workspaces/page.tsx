@@ -1,4 +1,5 @@
-import { getWorkspacesByUserId } from "@/server/actions/get-workspace";
+
+import { getWorkspacesByUserId } from "@/server/actions/workspaces/get-workspace";
 import { auth } from "@/server/auth";
 import { redirect } from "next/navigation";
 
@@ -14,7 +15,7 @@ const WorkspacePage = async () => {
   if (workspaces.length === 0) {
     redirect("/dashboard/add-workspace");
   } else {
-    redirect(`/workspaces/${workspaceId}`);
+    redirect(`/workspaces/${workspaceId[0]}`);
   }
 };
 

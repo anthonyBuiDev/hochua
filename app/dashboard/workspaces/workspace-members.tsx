@@ -24,9 +24,10 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { Members } from "@/lib/infer-type";
-import { createEditMember } from "@/server/actions/create-edit-member";
-import { deleteMember } from "@/server/actions/delete-member";
+
 import { getUser } from "@/server/actions/get-user";
+import { createEditMember } from "@/server/actions/members/create-edit-member";
+import { deleteMember } from "@/server/actions/members/delete-member";
 import { MembersSchema } from "@/types/members-schema";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Select } from "@radix-ui/react-select";
@@ -79,7 +80,7 @@ export const WorkspaceMembers = forwardRef<HTMLDivElement, MemberProps>(
 
     const { execute, status } = useAction(createEditMember, {
       onExecute() {
-        toast.loading("Creating member", { duration: 1 });
+        toast.loading("Đang thêm thành viên", { duration: 1 });
         setOpen(false);
       },
       onSuccess(data) {
@@ -104,7 +105,7 @@ export const WorkspaceMembers = forwardRef<HTMLDivElement, MemberProps>(
         }
       },
       onExecute() {
-        toast.loading("Deleting variant", { duration: 1 });
+        toast.loading("Xóa thành viên", { duration: 1 });
         setOpen(false);
       },
     });
@@ -132,11 +133,10 @@ export const WorkspaceMembers = forwardRef<HTMLDivElement, MemberProps>(
         <DialogContent className="max-h-[860px] overflow-y-scroll lg:max-w-screen-lg">
           <DialogHeader>
             <DialogTitle>
-              {editMode ? "Edit" : "Create"} Thành Viên cho Hồ chứa
+              {editMode ? "Sửa" : "Thêm"} Thành Viên cho Hồ chứa
             </DialogTitle>
             <DialogDescription>
-              Manage your product variants here. You can add tags, images, and
-              more.
+              Quản lý thành viên cho hồ chứa
             </DialogDescription>
           </DialogHeader>
           <Form {...form}>
@@ -181,7 +181,7 @@ export const WorkspaceMembers = forwardRef<HTMLDivElement, MemberProps>(
                     >
                       <FormControl>
                         <SelectTrigger>
-                          <SelectValue placeholder="Select a verified email to display" />
+                          <SelectValue placeholder="Chọn quyền cho thành viên" />
                         </SelectTrigger>
                       </FormControl>
                       <SelectContent>
@@ -206,7 +206,7 @@ export const WorkspaceMembers = forwardRef<HTMLDivElement, MemberProps>(
                       memberAction.execute({ id: member.id });
                     }}
                   >
-                    Delete Member
+                    Xóa thành viên
                   </Button>
                 )}
                 <Button
@@ -217,7 +217,7 @@ export const WorkspaceMembers = forwardRef<HTMLDivElement, MemberProps>(
                   }
                   type="submit"
                 >
-                  {editMode ? "Update Member" : "Create Member"}
+                  {editMode ? "Sửa thành viên" : "Thêm thành viên"}
                 </Button>
               </div>
             </form>

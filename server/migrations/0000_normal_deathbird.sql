@@ -44,10 +44,10 @@ CREATE TABLE IF NOT EXISTS "members" (
 --> statement-breakpoint
 CREATE TABLE IF NOT EXISTS "parameters" (
 	"id" serial PRIMARY KEY NOT NULL,
-	"title" text NOT NULL,
+	"title" text,
 	"unit" text,
 	"value" text,
-	"category" text,
+	"tt" text,
 	"workspaceId" text,
 	"createdAt" timestamp DEFAULT now() NOT NULL,
 	"updatedAt" timestamp DEFAULT now() NOT NULL
@@ -82,22 +82,22 @@ CREATE TABLE IF NOT EXISTS "user" (
 	"customerID" text
 );
 --> statement-breakpoint
-CREATE TABLE IF NOT EXISTS "waterLevels" (
+CREATE TABLE IF NOT EXISTS "waterLevelDischarge" (
 	"id" serial PRIMARY KEY NOT NULL,
-	"date" text,
-	"limitLevel" text,
-	"emergencyLevel" text,
+	"waterLevel" text,
+	"gateOpening" text,
+	"dischargeRate" text,
+	"type" text,
 	"workspaceId" text,
 	"createdAt" timestamp DEFAULT now() NOT NULL,
 	"updatedAt" timestamp DEFAULT now() NOT NULL
 );
 --> statement-breakpoint
-CREATE TABLE IF NOT EXISTS "waterLevelDischargeRelation" (
+CREATE TABLE IF NOT EXISTS "waterLevels" (
 	"id" serial PRIMARY KEY NOT NULL,
-	"waterLevel" text,
-	"gateOpening" text,
-	"dischargeRate" text,
-	"status" text,
+	"date" text,
+	"limitLevel" text,
+	"emergencyLevel" text,
 	"workspaceId" text,
 	"createdAt" timestamp DEFAULT now() NOT NULL,
 	"updatedAt" timestamp DEFAULT now() NOT NULL
@@ -148,13 +148,13 @@ EXCEPTION
 END $$;
 --> statement-breakpoint
 DO $$ BEGIN
- ALTER TABLE "waterLevels" ADD CONSTRAINT "waterLevels_workspaceId_workspaces_id_fk" FOREIGN KEY ("workspaceId") REFERENCES "public"."workspaces"("id") ON DELETE cascade ON UPDATE no action;
+ ALTER TABLE "waterLevelDischarge" ADD CONSTRAINT "waterLevelDischarge_workspaceId_workspaces_id_fk" FOREIGN KEY ("workspaceId") REFERENCES "public"."workspaces"("id") ON DELETE cascade ON UPDATE no action;
 EXCEPTION
  WHEN duplicate_object THEN null;
 END $$;
 --> statement-breakpoint
 DO $$ BEGIN
- ALTER TABLE "waterLevelDischargeRelation" ADD CONSTRAINT "waterLevelDischargeRelation_workspaceId_workspaces_id_fk" FOREIGN KEY ("workspaceId") REFERENCES "public"."workspaces"("id") ON DELETE cascade ON UPDATE no action;
+ ALTER TABLE "waterLevels" ADD CONSTRAINT "waterLevels_workspaceId_workspaces_id_fk" FOREIGN KEY ("workspaceId") REFERENCES "public"."workspaces"("id") ON DELETE cascade ON UPDATE no action;
 EXCEPTION
  WHEN duplicate_object THEN null;
 END $$;

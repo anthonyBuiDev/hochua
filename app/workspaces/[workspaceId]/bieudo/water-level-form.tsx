@@ -1,14 +1,6 @@
 "use client";
 import { Button } from "@/components/ui/button";
 import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogHeader,
-  DialogTitle,
-  DialogTrigger,
-} from "@/components/ui/dialog";
-import {
   Form,
   FormControl,
   FormField,
@@ -18,13 +10,21 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { useWorkspaceId } from "@/hooks/use-workspace-id";
-import { CreateLakeCharacteristics } from "@/server/actions/lakeCharacteristics/create-lake-characteristics";
-import { deleteLakeCharacteristics } from "@/server/actions/lakeCharacteristics/delete-lake-characteristics";
 
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog";
+import { CreateWaterLevel } from "@/server/actions/waterlevel/create-water-level";
+import { deleteWaterLevel } from "@/server/actions/waterlevel/delete-water-level";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useAction } from "next-safe-action/hooks";
-import { useState } from "react";
 
+import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { toast } from "sonner";
 import * as XLSX from "xlsx";
@@ -35,18 +35,15 @@ const schema = z.object({
 });
 
 
-export default function LakeCharacteristicForm() {
+export default function WaterLevelForm() {
   const form = useForm<z.infer<typeof schema>>({
     resolver: zodResolver(schema),
     defaultValues: {
       file: undefined,
     },
   });
-
   const workspaceId = useWorkspaceId();
   const [open, setOpen] = useState(false);
-
-
   const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
     if (file) {
@@ -58,21 +55,33 @@ export default function LakeCharacteristicForm() {
           const workbook = XLSX.read(binaryStr, { type: "array" });
           const firstSheetName = workbook.SheetNames[0];
           const worksheet = workbook.Sheets[firstSheetName];
-          const jsonData = XLSX.utils.sheet_to_json(worksheet, { defval: "" });
-          const characteristics = jsonData.map((row: any) => ({
-            elevation: String(row["Cao trình Z (m)"]),
-            surfaceArea: String(row["Diện tích mặt hồ F (ha)"]),
-            volume: String(row["Dung tích hồ V (106m³)"]),
-            workspaceId: workspaceId,
-          }));
+          const jsonData = XLSX.utils.sheet_to_json<Record<string, any>>(worksheet, { defval: "" });
+          const dateColumns = [
+            "31/III", "30/IV", "31/V", "30/VI", "31/VII",
+            "31/VIII", "1/IX", "1/X", "31/X", "30/XI", "31/XII", "31/I", "28/II"
+          ];
 
-          form.setValue("file", characteristics);
+          const waterLevels: { date: string; limitLevel: string; emergencyLevel: string; workspaceId: string }[] = [];
+          dateColumns.forEach((date) => {
+            const limitLevelRow = jsonData.find((row: Record<string, any>) => row["Ngày/ Tháng"] === "Đường hạn chế cấp nước");
+            const emergencyLevelRow = jsonData.find((row: Record<string, any>) => row["Ngày/ Tháng"] === "Đường phòng phá hoại");
+            const limitLevel = limitLevelRow ? String(limitLevelRow[date] || "") : "";
+            const emergencyLevel = emergencyLevelRow ? String(emergencyLevelRow[date] || "") : "";
+            waterLevels.push({
+              date,
+              limitLevel,
+              emergencyLevel,
+              workspaceId,
+            });
+          });
+
+          form.setValue("file", waterLevels);
         }
       };
     }
   };
 
-  const { execute, status } = useAction(CreateLakeCharacteristics, {
+  const { execute, status } = useAction(CreateWaterLevel, {
     onSuccess: (data) => {
       toast.dismiss();
       if (data?.data?.success) {
@@ -83,12 +92,12 @@ export default function LakeCharacteristicForm() {
       }
     },
     onExecute: (data) => {
+      toast.loading("Đang thêm thông số", { duration: 1 });
       setOpen(false);
-      toast.loading("Đang thêm...", { duration: 1 });
     },
   });
 
-  const lakeCharacteristicAction = useAction(deleteLakeCharacteristics, {
+  const waterLevelAction = useAction(deleteWaterLevel, {
     onSuccess(data) {
       toast.dismiss();
       if (data?.data?.error) {
@@ -100,14 +109,14 @@ export default function LakeCharacteristicForm() {
     },
     onExecute() {
       setOpen(false);
-      toast.loading("Đang xóa...", { duration: 1 });
+      toast.loading("Xóa thông số", { duration: 1 });
 
     },
   });
 
   function onSubmit(values: z.infer<typeof schema>) {
-    const characteristics = values.file;
-    execute(characteristics);
+    const waterLevels = values.file;
+    execute(waterLevels);
   }
 
   return (
@@ -117,11 +126,11 @@ export default function LakeCharacteristicForm() {
       </DialogTrigger>
       <DialogContent>
         <DialogHeader>
-          <DialogTitle>Thêm đặc tính</DialogTitle>
-          <DialogDescription>Thêm hoặc xóa đặc tính</DialogDescription>
+          <DialogTitle>Quản lý biểu đồ</DialogTitle>
+          <DialogDescription>Thêm hoặc xóa thông số</DialogDescription>
         </DialogHeader>
         <div className="flex justify-center items-center">
-          <Form {...form}>
+          < Form {...form}>
             <form
               onSubmit={form.handleSubmit(onSubmit)}
               className="w-2/3 space-y-6 flex flex-col  gap-2 "
@@ -147,18 +156,17 @@ export default function LakeCharacteristicForm() {
                   </FormItem>
                 )}
               />
-
               <div className="flex items-center justify-center gap-4">
                 <Button
                   variant={"destructive"}
                   type="button"
-                  disabled={lakeCharacteristicAction.status === "executing"}
+                  disabled={waterLevelAction.status === "executing"}
                   onClick={(e) => {
                     e.preventDefault();
-                    lakeCharacteristicAction.execute({ id: workspaceId });
+                    waterLevelAction.execute({ id: workspaceId });
                   }}
                 >
-                  Xóa đặc tính hồ
+                  Xóa thông số
                 </Button>
                 <Button
                   disabled={
@@ -168,14 +176,13 @@ export default function LakeCharacteristicForm() {
                   }
                   type="submit"
                 >
-                  Thêm đặc tính hồ
+                  Thêm thông số
                 </Button>
               </div>
             </form>
           </Form>
         </div>
       </DialogContent>
-    </Dialog>
-
+    </Dialog >
   );
 }

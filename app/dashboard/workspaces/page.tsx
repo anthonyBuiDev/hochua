@@ -6,7 +6,7 @@ import { columns } from "./columns";
 import { DataTable } from "./data-table";
 
 export const metadata: Metadata = {
-  title: "Workspaces",
+  title: "Hồ chứa",
 };
 
 export default async function Workspaces() {
@@ -31,7 +31,7 @@ export default async function Workspaces() {
     orderBy: (workspaces, { desc }) => [desc(workspaces.id)],
   });
 
-  if (!workspaces) throw new Error("No workspaces found");
+  if (!workspaces) throw new Error("Không có hồ chứa");
   const dataTable = workspaces.map((workspace) => {
     if (workspace.members.length === 0) {
       return {
@@ -47,7 +47,7 @@ export default async function Workspaces() {
     };
   });
 
-  if (!dataTable) throw new Error("No data found");
+  if (!dataTable) throw new Error("Không có dữ liệu");
   return (
     <div>
       <DataTable columns={columns} data={dataTable} />

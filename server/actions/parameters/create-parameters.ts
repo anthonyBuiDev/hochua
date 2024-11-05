@@ -26,10 +26,10 @@ export const CreateParameter = actionClient
           workspaceId: item.workspaceId,
         })))
         .returning();
-      revalidatePath(`/workspace/${parameter[0].workspaceId}/parameters`);
-      return { success: `ParameterSchema`, };
+      revalidatePath(`/workspace/${parameter[0].workspaceId}/thongso`);
+      return { success: `Create parameters`, };
     } catch (err) {
-      return { error: "Failed to create product", err };
+      return { error: "Failed to create parameters", err };
     }
   });
 

@@ -1,5 +1,5 @@
 {
-  "id": "c4e3a106-08fe-4370-9193-1be41a5b4e1d",
+  "id": "3276f01e-b1a4-4096-9ca2-06e58127e6d4",
   "prevId": "00000000-0000-0000-0000-000000000000",
   "version": "7",
   "dialect": "postgresql",
@@ -307,7 +307,7 @@
           "name": "title",
           "type": "text",
           "primaryKey": false,
-          "notNull": true
+          "notNull": false
         },
         "unit": {
           "name": "unit",
@@ -321,8 +321,8 @@
           "primaryKey": false,
           "notNull": false
         },
-        "category": {
-          "name": "category",
+        "tt": {
+          "name": "tt",
           "type": "text",
           "primaryKey": false,
           "notNull": false
@@ -542,6 +542,81 @@
       "uniqueConstraints": {},
       "checkConstraints": {}
     },
+    "public.waterLevelDischarge": {
+      "name": "waterLevelDischarge",
+      "schema": "",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "serial",
+          "primaryKey": true,
+          "notNull": true
+        },
+        "waterLevel": {
+          "name": "waterLevel",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "gateOpening": {
+          "name": "gateOpening",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "dischargeRate": {
+          "name": "dischargeRate",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "type": {
+          "name": "type",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "workspaceId": {
+          "name": "workspaceId",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "createdAt": {
+          "name": "createdAt",
+          "type": "timestamp",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "now()"
+        },
+        "updatedAt": {
+          "name": "updatedAt",
+          "type": "timestamp",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "now()"
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {
+        "waterLevelDischarge_workspaceId_workspaces_id_fk": {
+          "name": "waterLevelDischarge_workspaceId_workspaces_id_fk",
+          "tableFrom": "waterLevelDischarge",
+          "tableTo": "workspaces",
+          "columnsFrom": [
+            "workspaceId"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {},
+      "checkConstraints": {}
+    },
     "public.waterLevels": {
       "name": "waterLevels",
       "schema": "",
@@ -596,81 +671,6 @@
         "waterLevels_workspaceId_workspaces_id_fk": {
           "name": "waterLevels_workspaceId_workspaces_id_fk",
           "tableFrom": "waterLevels",
-          "tableTo": "workspaces",
-          "columnsFrom": [
-            "workspaceId"
-          ],
-          "columnsTo": [
-            "id"
-          ],
-          "onDelete": "cascade",
-          "onUpdate": "no action"
-        }
-      },
-      "compositePrimaryKeys": {},
-      "uniqueConstraints": {},
-      "checkConstraints": {}
-    },
-    "public.waterLevelDischargeRelation": {
-      "name": "waterLevelDischargeRelation",
-      "schema": "",
-      "columns": {
-        "id": {
-          "name": "id",
-          "type": "serial",
-          "primaryKey": true,
-          "notNull": true
-        },
-        "waterLevel": {
-          "name": "waterLevel",
-          "type": "text",
-          "primaryKey": false,
-          "notNull": false
-        },
-        "gateOpening": {
-          "name": "gateOpening",
-          "type": "text",
-          "primaryKey": false,
-          "notNull": false
-        },
-        "dischargeRate": {
-          "name": "dischargeRate",
-          "type": "text",
-          "primaryKey": false,
-          "notNull": false
-        },
-        "status": {
-          "name": "status",
-          "type": "text",
-          "primaryKey": false,
-          "notNull": false
-        },
-        "workspaceId": {
-          "name": "workspaceId",
-          "type": "text",
-          "primaryKey": false,
-          "notNull": false
-        },
-        "createdAt": {
-          "name": "createdAt",
-          "type": "timestamp",
-          "primaryKey": false,
-          "notNull": true,
-          "default": "now()"
-        },
-        "updatedAt": {
-          "name": "updatedAt",
-          "type": "timestamp",
-          "primaryKey": false,
-          "notNull": true,
-          "default": "now()"
-        }
-      },
-      "indexes": {},
-      "foreignKeys": {
-        "waterLevelDischargeRelation_workspaceId_workspaces_id_fk": {
-          "name": "waterLevelDischargeRelation_workspaceId_workspaces_id_fk",
-          "tableFrom": "waterLevelDischargeRelation",
           "tableTo": "workspaces",
           "columnsFrom": [
             "workspaceId"

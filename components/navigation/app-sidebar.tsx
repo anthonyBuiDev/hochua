@@ -86,7 +86,7 @@ export function AppSidebar({ workspaces }: workspaceProps) {
                     <SidebarMenuButton
                       asChild
                       className="py-5 flex font-medium"
-                      isActive={link.path === pathname}
+                      isActive={`/workspaces/${workspaceId}${link.path}` === pathname}
                     >
                       <Link
                         href={`/workspaces/${workspaceId}${link.path}`}
@@ -104,39 +104,3 @@ export function AppSidebar({ workspaces }: workspaceProps) {
     </Sidebar >
   );
 }
-{/* <DropdownMenu>
-  <DropdownMenuTrigger asChild>
-    <SidebarMenuButton
-      size="lg"
-      className="data-[state=open]:bg-sidebar-accent data-[state=open]:text-sidebar-accent-foreground"
-    >
-      <div className="flex aspect-square size-8 items-center justify-center rounded-lg bg-sidebar-primary text-sidebar-primary-foreground">
-        <GalleryVerticalEnd className="size-4" />
-      </div>
-      <div className="flex flex-col gap-0.5 leading-none">
-        <span className="font-semibold">Hồ chứa</span>
-        <span className="">{selected}</span>
-      </div>
-      <ChevronsUpDown className="ml-auto" />
-    </SidebarMenuButton>
-  </DropdownMenuTrigger>
-  <DropdownMenuContent
-    className="w-[--radix-dropdown-menu-trigger-width]"
-    align="start"
-  >
-    {workspaces.map((workspace) => (
-      <DropdownMenuItem
-        key={workspace.id}
-        onSelect={() => {
-          setSelected(workspace.name);
-          onSelect(workspace.id);
-        }}
-      >
-        {workspace.name}
-        {workspace.name === selected && (
-          <Check className="ml-auto" />
-        )}
-      </DropdownMenuItem>
-    ))}
-  </DropdownMenuContent>
-</DropdownMenu> */}

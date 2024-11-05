@@ -15,7 +15,8 @@ import {
   TooltipTrigger,
 } from "@/components/ui/tooltip";
 import { Members } from "@/lib/infer-type";
-import { deleteWorkspace } from "@/server/actions/delete-workspace";
+
+import { deleteWorkspace } from "@/server/actions/workspaces/delete-workspace";
 import { ColumnDef, Row } from "@tanstack/react-table";
 import { MoreHorizontal, PlusCircle } from "lucide-react";
 import { useAction } from "next-safe-action/hooks";
@@ -42,7 +43,7 @@ const ActionCell = ({ row }: { row: Row<WorkspaceColumn> }) => {
       }
     },
     onExecute: () => {
-      toast.loading("Deleting Product");
+      toast.loading("Đang xóa hồ chứa");
     },
   });
 

@@ -150,7 +150,6 @@ export function DataTable<TData, TValue>({
             </div>
           </div>
         </CardContent>
-
       </Card>
     </div >
   );

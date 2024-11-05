@@ -2,7 +2,7 @@
 import { actionClient } from "@/lib/safe-action";
 import { db } from "@/server";
 import { lakeCharacteristics } from "@/server/schema";
-import { LakeCharacteristicSchema } from "@/types/lakeCharacteristics-schema";
+import { LakeCharacteristicSchema } from "@/types/lake-characteristics-schema";
 import { revalidatePath } from "next/cache";
 import { z } from "zod";
 
@@ -22,7 +22,7 @@ export const CreateLakeCharacteristics = actionClient
           volume: item.volume,
         })))
         .returning();
-      revalidatePath(`/workspace/${characteristics[0].workspaceId}/parameters`);
+      revalidatePath(`/workspace/${characteristics[0].workspaceId}/dactinh`);
       return { success: `Create lake characteristics`, };
     } catch (err) {
       return { error: "Failed to create lake characteristics`", err };

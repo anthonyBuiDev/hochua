@@ -9,7 +9,7 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import { Input } from "@/components/ui/input";
+
 import {
   Table,
   TableBody,
@@ -22,12 +22,9 @@ import {
   ColumnDef,
 
 
-
   flexRender,
   getCoreRowModel,
-
   getPaginationRowModel,
-
   useReactTable,
 } from "@tanstack/react-table";
 import { ChevronLeftIcon, ChevronRightIcon } from "lucide-react";

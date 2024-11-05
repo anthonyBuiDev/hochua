@@ -16,8 +16,9 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import { createEditWorkspace } from "@/server/actions/create-edit-workspace";
-import { getWorkspaceById } from "@/server/actions/get-workspace";
+import { createEditWorkspace } from "@/server/actions/workspaces/create-edit-workspace";
+import { getWorkspaceById } from "@/server/actions/workspaces/get-workspace";
+
 import { WorkspacesSchema, zWorkspacesSchema } from "@/types/workspaces-schema";
 
 import { zodResolver } from "@hookform/resolvers/zod";

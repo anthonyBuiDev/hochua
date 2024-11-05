@@ -1,12 +1,12 @@
 "use server";
-
 import { actionClient } from "@/lib/safe-action";
+import { db } from "@/server";
+import { auth } from "@/server/auth";
+import { members, workspaces } from "@/server/schema";
 import { WorkspacesSchema } from "@/types/workspaces-schema";
 import { eq } from "drizzle-orm";
 import { revalidatePath } from "next/cache";
-import { db } from "..";
-import { auth } from "../auth";
-import { members, workspaces } from "../schema";
+
 
 export const createEditWorkspace = actionClient
   .schema(WorkspacesSchema)
@@ -15,11 +15,15 @@ export const createEditWorkspace = actionClient
       const session = await auth();
       const userId = session?.user?.id;
 
+      if (session?.user?.roles !== 'admin') {
+        return { error: "Bạn không phải là admin" };
+      }
+
       if (id) {
         const currentWorkspace = await db.query.workspaces.findFirst({
           where: eq(workspaces.id, id),
         });
-        if (!currentWorkspace) return { error: "Workspace not found" };
+        if (!currentWorkspace) return { error: "Không tìm thấy hồ chứa" };
         const editedWorkspace = await db
           .update(workspaces)
           .set({ name })
@@ -27,7 +31,7 @@ export const createEditWorkspace = actionClient
           .returning();
         revalidatePath("/dashboard/workspaces");
         return {
-          success: `Workspace ${editedWorkspace[0].name} has been edited`,
+          success: `Hồ chứa ${editedWorkspace[0].name} đã được sửa`,
         };
       }
       if (!id) {
@@ -43,13 +47,15 @@ export const createEditWorkspace = actionClient
           workspaceId,
           workspaceRoles: "admin",
         });
+
         revalidatePath("/dashboard/workspaces");
+
         return {
-          success: `Workspace ${newWorkspace[0].name} has been created`,
+          success: `Hồ chứa ${newWorkspace[0].name} đã được tạo`,
         };
       }
     } catch (error) {
       console.log(error);
-      return { error: "Failed to create Workspace" };
+      return { error: "Tạo hồ chứa thất bại" };
     }
   });

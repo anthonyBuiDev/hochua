@@ -144,7 +144,7 @@ export const parameters = pgTable("parameters", {
   updatedAt: timestamp("updatedAt").defaultNow().notNull(),
 });
 
-export const waterLevel = pgTable("waterLevels", {
+export const waterLevels = pgTable("waterLevels", {
   id: serial("id").primaryKey(),
   date: text("date"),
   limitLevel: text("limitLevel"),
@@ -168,14 +168,14 @@ export const lakeCharacteristics = pgTable("lakeCharacteristics", {
   updatedAt: timestamp("updatedAt").defaultNow().notNull(),
 });
 
-export const waterLevelDischarge = pgTable(
+export const waterLevelDischarges = pgTable(
   "waterLevelDischarge",
   {
     id: serial("id").primaryKey(),
     waterLevel: text("waterLevel"),
     gateOpening: text("gateOpening"),
     dischargeRate: text("dischargeRate"),
-    status: text("status"),
+    type: text("type"),
     workspaceId: text("workspaceId").references(() => workspaces.id, {
       onDelete: "cascade",
     }),
@@ -189,8 +189,8 @@ export const workspaceRelations = relations(workspaces, ({ many, one }) => ({
   members: many(members, { relationName: "members" }),
   parameter: one(parameters),
   lakeCharacteristics: one(lakeCharacteristics),
-  waterLevelDischarge: one(waterLevelDischarge),
-  waterLevel: one(waterLevel),
+  waterLevelDischarge: one(waterLevelDischarges),
+  waterLevel: one(waterLevels),
 }))
 
 export const parameterWorkspaceRelations = relations(parameters, ({ one }) => ({
@@ -209,17 +209,17 @@ export const lakeCharacteristicsWorkspaceRelations = relations(lakeCharacteristi
   }),
 }))
 
-export const waterLevelDischargeWorkspaceRelations = relations(waterLevelDischarge, ({ one }) => ({
+export const waterLevelDischargeWorkspaceRelations = relations(waterLevelDischarges, ({ one }) => ({
   workspaces: one(workspaces, {
-    fields: [waterLevelDischarge.workspaceId],
+    fields: [waterLevelDischarges.workspaceId],
     references: [workspaces.id],
     relationName: "waterLevelDischargeWorkspace",
   }),
 }))
 
-export const waterLevelWorkspaceRelations = relations(waterLevel, ({ one }) => ({
+export const waterLevelWorkspaceRelations = relations(waterLevels, ({ one }) => ({
   workspaces: one(workspaces, {
-    fields: [waterLevel.workspaceId],
+    fields: [waterLevels.workspaceId],
     references: [workspaces.id],
     relationName: "waterLevelWorkspace",
   }),

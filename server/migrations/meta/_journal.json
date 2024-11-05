@@ -5,43 +5,8 @@
     {
       "idx": 0,
       "version": "7",
-      "when": 1730450926047,
-      "tag": "0000_natural_vindicator",
-      "breakpoints": true
-    },
-    {
-      "idx": 1,
-      "version": "7",
-      "when": 1730454638243,
-      "tag": "0001_careless_the_hunter",
-      "breakpoints": true
-    },
-    {
-      "idx": 2,
-      "version": "7",
-      "when": 1730457125304,
-      "tag": "0002_dashing_loa",
-      "breakpoints": true
-    },
-    {
-      "idx": 3,
-      "version": "7",
-      "when": 1730463442831,
-      "tag": "0003_slippery_calypso",
-      "breakpoints": true
-    },
-    {
-      "idx": 4,
-      "version": "7",
-      "when": 1730537603322,
-      "tag": "0004_omniscient_korath",
-      "breakpoints": true
-    },
-    {
-      "idx": 5,
-      "version": "7",
-      "when": 1730537814371,
-      "tag": "0005_peaceful_raza",
+      "when": 1730719397496,
+      "tag": "0000_normal_deathbird",
       "breakpoints": true
     }
   ]
