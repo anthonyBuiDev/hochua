@@ -4,8 +4,11 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Form, FormControl, FormField, FormItem, FormLabel } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
+import { db } from "@/server";
 import { getLakeCharacteristic } from "@/server/actions/get-lake-characteristic";
+import { waterLevelDischarges } from "@/server/schema";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { and, eq } from "drizzle-orm";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import * as z from "zod";
@@ -29,16 +32,18 @@ export default function InputForm() {
   });
 
   async function onSubmit(values: z.infer<typeof formSchema>) {
-    const result = await getLakeCharacteristic(values.elevation);
-
-    if (result.success) {
-      form.setValue("surfaceArea", result?.characteristic?.surfaceArea!);
-      form.setValue("volume", result?.characteristic?.volume!);
-    } else {
-      // console.error(result.error);
-      // alert("Không tìm thấy dữ liệu cho mực nước đã nhập.");
-    }
+    const result = await db.query.waterLevelDischarges.findFirst({
+      where: and(eq(waterLevelDischarges.gateOpening, "0.1"), eq(waterLevelDischarges.waterLevel, "21")),
+    })
+    console.log(result);
+    // if (result.success) {
+    //   form.setValue("surfaceArea", result?.characteristic?.surfaceArea!);
+    //   form.setValue("volume", result?.characteristic?.volume!);
+    // } else {
+    // console.error(result.error);
+    // alert("Không tìm thấy dữ liệu cho mực nước đã nhập.");
   }
+
 
   return (
     <Form {...form}>
@@ -96,5 +101,5 @@ export default function InputForm() {
         <Button type="submit" className="mt-4">Submit</Button>
       </form>
     </Form>
-  );
+  )
 }
