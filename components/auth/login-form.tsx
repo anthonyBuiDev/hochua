@@ -45,6 +45,11 @@ export const LoginForm = () => {
     },
   });
 
+
+  const handleForgotPassword = () => {
+    setError("Liên hệ admin cấp lại mật khẩu");
+  };
+
   const onSubmit = (values: z.infer<typeof LoginSchema>) => {
     execute(values);
   };
@@ -100,7 +105,7 @@ export const LoginForm = () => {
 
               <FormSuccess message={success} />
               <FormError message={error} />
-              <Button size={"sm"} className="px-0" variant={"link"} onClick={() => setError("Liên hệ admin cấp lại mật khẩu")}>
+              <Button size={"sm"} className="px-0" variant={"link"} onClick={handleForgotPassword}>
                 Quên mật khẩu?
               </Button>
             </div>

@@ -27,12 +27,13 @@ export const Register = actionClient
 
     const isFirstUser = await db.query.users.findMany();
     const role = isFirstUser.length === 0 ? "admin" : "user";
-
+    const emailVerified = isFirstUser.length === 0 ? new Date() : null
     await db.insert(users).values({
       email,
       name,
       password: hashedPassword,
       roles: role,
+      emailVerified
     });
 
 
