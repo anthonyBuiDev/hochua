@@ -37,14 +37,14 @@ export const settings = actionClient
         dbUser.password,
       );
       if (!passwordMatch) {
-        return { error: "Password does not match" };
+        return { error: "Mật khẩu không khớp" };
       }
       const samePassword = await bcrypt.compare(
         parsedInput.newPassword,
         dbUser.password,
       );
       if (samePassword) {
-        return { error: "New password is the same as the old password" };
+        return { error: "Mật khẩu mới không được giống mật khẩu cũ" };
       }
       const hashedPassword = await bcrypt.hash(parsedInput.newPassword, 10);
       parsedInput.password = hashedPassword;
@@ -60,5 +60,5 @@ export const settings = actionClient
       })
       .where(eq(users.id, dbUser.id));
     revalidatePath("/dashboard/settings");
-    return { success: "Settings updated" };
+    return { success: "Cài đặt đã được lưu" };
   });

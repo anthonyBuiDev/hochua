@@ -40,7 +40,7 @@ export default async function Header() {
               <Button asChild>
                 <Link className="flex gap-2" href="/auth/login">
                   <LogIn size={16} />
-                  <span>Login</span>
+                  <span>Đăng nhập</span>
                 </Link>
               </Button>
             </li>

@@ -13,7 +13,7 @@ export default async function DashboardLayout({
 
   const userLinks = [
     {
-      label: "Settings",
+      label: "Cài đặt",
       path: "/dashboard/settings",
       icon: <Settings size={16} />,
     },

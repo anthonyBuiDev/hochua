@@ -32,12 +32,12 @@ export const SignIn = actionClient
         redirectTo: "/",
       });
 
-      return { success: "User Signed In!" };
+      return { success: "Bạn đã đăng nhập!" };
     } catch (error) {
       if (error instanceof AuthError) {
         switch (error.type) {
           case "CredentialsSignin":
-            return { error: "Email or Password Incorrect" };
+            return { error: "Email hoặc Password không đúng" };
           case "AccessDenied":
             return { error: error.message };
           case "OAuthSignInError":

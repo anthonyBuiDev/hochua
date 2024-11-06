@@ -18,9 +18,9 @@ export const deleteWaterLevelDischarge = actionClient
         .where(eq(waterLevelDischarges.workspaceId, id))
         .returning();
       revalidatePath(`/workspaces/`);
-      return { success: `Lake Characteristics has been deleted` };
+      return { success: `Xóa thành công` };
     } catch (error) {
       console.log(error);
-      return { error: "Failed to delete Lake Characteristics" };
+      return { error: "Xóa thất bại" };
     }
   });

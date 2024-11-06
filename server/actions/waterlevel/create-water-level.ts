@@ -22,9 +22,9 @@ export const CreateWaterLevel = actionClient
         })))
         .returning();
       revalidatePath(`/workspace/${waterLevel[0].workspaceId}/bieudo`);
-      return { success: `Create lake Water Level`, };
+      return { success: `Thêm thành công`, };
     } catch (err) {
-      return { error: "Failed to create Water Level`", err };
+      return { error: "Thêm thất bại", err };
     }
   });
 

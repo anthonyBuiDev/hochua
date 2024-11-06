@@ -5,7 +5,7 @@ import SettingCard from "./setting-card";
 import { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "Your Settings",
+  title: "Cài đặt",
 };
 
 export default async function Settings() {

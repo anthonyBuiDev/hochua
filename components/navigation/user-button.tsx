@@ -83,7 +83,7 @@ export default function UserButton({ user }: Session) {
               size={14}
               className="mr-3 transition-all duration-300 ease-in-out group-hover:rotate-180"
             />
-            Settings
+            Cài đặt
           </DropdownMenuItem>
           {theme && (
             <DropdownMenuItem className="cursor-pointer py-2 font-medium  ease-in-out">
@@ -126,7 +126,7 @@ export default function UserButton({ user }: Session) {
               size={14}
               className="mr-3  transition-all duration-300 ease-in-out group-hover:scale-75"
             />
-            Sign out
+            Đăng xuất
           </DropdownMenuItem>
         </DropdownMenuContent>
       </DropdownMenu>

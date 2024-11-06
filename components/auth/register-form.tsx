@@ -41,6 +41,9 @@ export const RegisterForm = () => {
     },
   });
 
+  const handleForgotPassword = () => {
+    setError("Liên hệ admin cấp lại mật khẩu");
+  };
   const onSubmit = (values: z.infer<typeof RegisterSchema>) => {
     console.log("before server action runs");
     execute(values);
@@ -113,7 +116,7 @@ export const RegisterForm = () => {
               />
               <FormSuccess message={success} />
               <FormError message={error} />
-              <Button size={"sm"} className="px-0" variant={"link"} onClick={() => setError("Liên hệ admin cấp lại mật khẩu")}>
+              <Button size={"sm"} className="px-0" variant={"link"} onClick={handleForgotPassword}>
                 Quên mật khẩu?
               </Button>
             </div>

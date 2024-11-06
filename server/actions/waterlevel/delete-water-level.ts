@@ -19,9 +19,9 @@ export const deleteWaterLevel = actionClient
         .returning();
       revalidatePath(`/workspaces/`);
 
-      return { success: `Water Level has been deleted` };
+      return { success: `Xóa thành công` };
     } catch (error) {
       console.log(error);
-      return { error: "Failed to delete Water Level" };
+      return { error: "Xóa thất bại" };
     }
   });

@@ -8,10 +8,10 @@ export async function getUser(id: string) {
     const user = await db.query.users.findFirst({
       where: eq(users.id, id),
     });
-    if (!user) throw new Error("user  not found");
+    if (!user) throw new Error("Không tìm thấy người dùng");
     return { success: user };
   } catch (error) {
     console.error(error);
-    return { error: "Failed to get user " };
+    return { error: "Không thể tìm người dùng " };
   }
 }

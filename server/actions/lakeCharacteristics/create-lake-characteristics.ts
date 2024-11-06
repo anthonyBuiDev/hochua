@@ -23,9 +23,9 @@ export const CreateLakeCharacteristics = actionClient
         })))
         .returning();
       revalidatePath(`/workspace/${characteristics[0].workspaceId}/dactinh`);
-      return { success: `Create lake characteristics`, };
+      return { success: `Thêm thành công`, };
     } catch (err) {
-      return { error: "Failed to create lake characteristics`", err };
+      return { error: "Thêm thất bại", err };
     }
   });
 

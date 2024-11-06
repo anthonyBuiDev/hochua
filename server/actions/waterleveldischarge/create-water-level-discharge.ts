@@ -8,20 +8,19 @@ import { revalidatePath } from "next/cache";
 import { z } from "zod";
 
 
-//TODO: make edit parameter schema
 
 export const CreateWaterLevelDischarge = actionClient
   .schema(z.array(WaterLevelDischargeSchema))
   .action(async ({ parsedInput }) => {
     try {
-      // Chia nhỏ dữ liệu thành từng mảng nhỏ
-      const batchSize = 1000; // Kích thước nhóm
+      // C
+      const batchSize = 1000;
       const batches = [];
       for (let i = 0; i < parsedInput.length; i += batchSize) {
         batches.push(parsedInput.slice(i, i + batchSize));
       }
 
-      // Chèn từng nhóm vào cơ sở dữ liệu
+
       for (const batch of batches) {
         await db
           .insert(waterLevelDischarges)
@@ -32,12 +31,15 @@ export const CreateWaterLevelDischarge = actionClient
             waterLevel: item.waterLevel,
             dischargeRate: item.dischargeRate,
           })))
-          .returning();
+
       }
-      // revalidatePath(`/workspace/${waterLevelDischarge[0].workspaceId}/${waterLevelDischarge[0].type}`);
-      return { success: `Create Water Level Discharge`, };
+
+      const { workspaceId, type } = parsedInput[0];
+      revalidatePath(`/workspace/${workspaceId}/${type}`);
+
+      return { success: `Thêm thành công`, };
     } catch (err) {
-      return { error: "Failed to create Water Level Discharge`", err };
+      return { error: "Xóa thất bại`", err };
     }
   });
 

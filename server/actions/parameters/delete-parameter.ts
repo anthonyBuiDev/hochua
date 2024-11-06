@@ -18,9 +18,9 @@ export const deleteParameter = actionClient
         .where(eq(parameters.workspaceId, id))
         .returning();
       revalidatePath(`/workspaces/`);
-      return { success: `Parameters has been deleted` };
+      return { success: "Xóa thành công" };
     } catch (error) {
       console.log(error);
-      return { error: "Failed to delete workspace" };
+      return { error: "Xóa thất bại" };
     }
   });

@@ -27,9 +27,9 @@ export const CreateParameter = actionClient
         })))
         .returning();
       revalidatePath(`/workspace/${parameter[0].workspaceId}/thongso`);
-      return { success: `Create parameters`, };
+      return { success: `Thêm thành công`, };
     } catch (err) {
-      return { error: "Failed to create parameters", err };
+      return { error: "Thêm thất bại to", err };
     }
   });
 
