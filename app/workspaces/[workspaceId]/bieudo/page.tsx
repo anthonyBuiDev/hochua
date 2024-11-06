@@ -36,6 +36,25 @@ export default async function BieuDo({
 
   if (!waterLevel) throw new Error("Không tìm thấy thông số");
 
+
+  const dataTable = waterLevel.map(data => {
+
+    const line3 = data.date === "1/IX" ? 24.2 : data.date === "1/X" ? 24.2 : data.date === "30/X" ? 24.2 : data.date === "30/XI" ? 24.2 : data.date === "31/XII" ? 24.2 : data.date === "31/I" ? 27.3 : null;
+
+    return {
+      date: data.date,
+      emergencyLevel: data.emergencyLevel,
+      limitLevel: data.limitLevel,
+      line3,
+      mntl: 24.2,
+      mnc: 20.2,
+      mndbt: 24.2,
+      ctdl: 27.7,
+      mnlkt: 27.29
+    }
+  })
+
+  console.log(dataTable);
   return (
     <div className="w-full lg:max-w-7xl">
       <WaterLevelForm />
@@ -45,7 +64,7 @@ export default async function BieuDo({
             <CardTitle>Biểu đồ điều phối</CardTitle>
           </CardHeader>
           <CardContent className="flex flex-col gap-5">
-            <Chart data={waterLevel} />
+            <Chart data={dataTable} />
             <WaterLevelTable data={waterLevel} />
           </CardContent>
         </Card>

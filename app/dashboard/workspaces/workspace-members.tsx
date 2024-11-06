@@ -25,9 +25,10 @@ import {
 } from "@/components/ui/select";
 import { Members } from "@/lib/infer-type";
 
-import { getUser } from "@/server/actions/get-user";
+
 import { createEditMember } from "@/server/actions/members/create-edit-member";
 import { deleteMember } from "@/server/actions/members/delete-member";
+import { getUser } from "@/server/actions/users/get-user";
 import { MembersSchema } from "@/types/members-schema";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Select } from "@radix-ui/react-select";

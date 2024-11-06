@@ -1,7 +1,6 @@
 "use client";
-
 import { cn } from "@/lib/utils";
-import { emailRegister } from "@/server/actions/email-register";
+import { Register } from "@/server/actions/register";
 import { RegisterSchema } from "@/types/register-schema";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useAction } from "next-safe-action/hooks";
@@ -35,7 +34,7 @@ export const RegisterForm = () => {
   const [error, setError] = useState("");
   const [success, setSuccess] = useState("");
 
-  const { execute, status } = useAction(emailRegister, {
+  const { execute, status } = useAction(Register, {
     onSuccess(data) {
       if (data?.data?.error) setError(data.data.error);
       if (data?.data?.success) setSuccess(data.data.success);

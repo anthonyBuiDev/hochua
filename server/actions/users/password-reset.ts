@@ -1,13 +1,14 @@
 "use server";
 
 import { actionClient } from "@/lib/safe-action";
+import { db } from "@/server";
+import { users } from "@/server/schema";
 import { Pool } from "@neondatabase/serverless";
 import bcrypt from "bcrypt";
 import { eq } from "drizzle-orm";
 import { drizzle } from "drizzle-orm/neon-serverless";
 import { z } from "zod";
-import { db } from "..";
-import { users } from "../schema";
+
 
 export const reset = actionClient
   .schema(z.object({ id: z.string() }))
@@ -19,7 +20,7 @@ export const reset = actionClient
     });
 
     if (!existingUser) {
-      return { error: "User not found" };
+      return { error: "Không tìm thấy người dùng" };
     }
 
     const hashedPassword = await bcrypt.hash("pass@123", 10);
@@ -34,5 +35,5 @@ export const reset = actionClient
     });
 
 
-    return { success: "Reset Email Sent" };
+    return { success: "Đã cấp lại mật khẩu" };
   });

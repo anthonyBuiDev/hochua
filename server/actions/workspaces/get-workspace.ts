@@ -24,8 +24,10 @@ export async function getWorkspacesByUserId(userId: string) {
       where: eq(members.userId, userId),
     });
 
+    if (!userMembers) return [];
     const workspaceIds = userMembers.map((member) => member.workspaceId);
-    //TODO: remove null values from workspaceIds
+
+
     const workspaceList = await db.query.workspaces.findMany({
       where: inArray(
         workspaces.id,

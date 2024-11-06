@@ -21,7 +21,7 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import { Switch } from "@/components/ui/switch";
+
 import { settings } from "@/server/actions/settings";
 import { SettingsSchema } from "@/types/settings-schema";
 
@@ -41,15 +41,15 @@ export default function SettingsCard(session: SettingsForm) {
   const [error, setError] = useState<string | undefined>();
   const [success, setSuccess] = useState<string | undefined>();
   const [avatarUploading, setAvatarUploading] = useState(false);
-  // console.log(session.session.user);
+
   const form = useForm<z.infer<typeof SettingsSchema>>({
     resolver: zodResolver(SettingsSchema),
     defaultValues: {
-      password: undefined,
-      newPassword: undefined,
-      name: session.session.user?.name || undefined,
-      email: session.session.user?.email || undefined,
-      image: session.session.user?.image || undefined,
+      password: "",
+      newPassword: "",
+      name: session.session.user?.name || "",
+      email: session.session.user?.email || "",
+      image: session.session.user?.image || "",
     },
   });
 

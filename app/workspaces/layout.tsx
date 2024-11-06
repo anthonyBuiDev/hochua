@@ -18,6 +18,14 @@ export default async function DashboardLayout({
 
   const workspaces = await getWorkspacesByUserId(user.user.id);
 
+  const isMember = workspaces.some(workspace =>
+    workspace.members.some(member => member.userId === user.user.id)
+  );
+
+  if (!isMember) {
+    redirect("/dashboard/settings/");
+  }
+
   return (
     <div className="min-h-screen">
       <SidebarProvider>

@@ -1,6 +1,7 @@
 "use client";
 import { cn } from "@/lib/utils";
-import { emailSignIn } from "@/server/actions/email-signin";
+
+import { SignIn } from "@/server/actions/signin";
 import { LoginSchema } from "@/types/login-schema";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useAction } from "next-safe-action/hooks";
@@ -35,7 +36,7 @@ export const LoginForm = () => {
   const [success, setSuccess] = useState("");
 
 
-  const { execute, status } = useAction(emailSignIn, {
+  const { execute, status } = useAction(SignIn, {
     onSuccess(data) {
       if (data?.data?.error) setError(data?.data?.error);
       if (data?.data?.success) {
@@ -67,7 +68,7 @@ export const LoginForm = () => {
                     <FormControl>
                       <Input
                         {...field}
-                        placeholder="developedbyed@gmail.com"
+
                         type="email"
                         autoComplete="email"
                       />

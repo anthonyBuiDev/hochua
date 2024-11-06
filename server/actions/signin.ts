@@ -9,7 +9,7 @@ import { signIn } from "../auth";
 import { users } from "../schema";
 
 
-export const emailSignIn = actionClient
+export const SignIn = actionClient
   .schema(LoginSchema)
   .action(async ({ parsedInput: { email, password } }) => {
     try {

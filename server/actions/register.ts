@@ -7,7 +7,7 @@ import { db } from "..";
 import { users } from "../schema";
 
 
-export const emailRegister = actionClient
+export const Register = actionClient
   .schema(RegisterSchema)
   .action(async ({ parsedInput: { email, name, password } }) => {
     const hashedPassword = await bcrypt.hash(password, 10);

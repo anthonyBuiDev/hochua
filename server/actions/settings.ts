@@ -15,14 +15,14 @@ export const settings = actionClient
   .action(async ({ parsedInput }) => {
     const user = await auth();
     if (!user) {
-      return { error: "User not found" };
+      return { error: "Không tìm thấy người dùng" };
     }
     const dbUser = await db.query.users.findFirst({
       where: eq(users.id, user?.user?.id ?? ""),
     });
 
     if (!dbUser) {
-      return { error: "User not found" };
+      return { error: "Không tìm thấy người dùng" };
     }
 
     if (user?.user?.isOAuth) {
