@@ -7,6 +7,12 @@ import WaterLevelDischargeForm from "./water-level-discharge-form";
 import WaterLevelTable from "./water-level-table";
 
 
+import { Metadata } from "next";
+export const metadata: Metadata = {
+  title: "V1 mở V2 đóng",
+};
+
+
 export default async function modong({
   params,
 }: {

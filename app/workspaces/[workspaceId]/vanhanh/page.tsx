@@ -9,8 +9,11 @@ import {
 } from "@/components/ui/card";
 import { getData } from "@/server/actions/get-data";
 import { auth } from "@/server/auth";
+import { Metadata } from "next";
 import { redirect } from "next/navigation";
-
+export const metadata: Metadata = {
+  title: "Vận hành",
+};
 
 export default async function VanHanh({
   searchParams,

@@ -47,10 +47,12 @@ export const LoginForm = () => {
 
 
   const handleForgotPassword = () => {
+
     setError("Liên hệ admin cấp lại mật khẩu");
   };
 
   const onSubmit = (values: z.infer<typeof LoginSchema>) => {
+    setError("");
     execute(values);
   };
 

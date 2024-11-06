@@ -1,5 +1,4 @@
 
-
 import {
   Card,
   CardContent,
@@ -15,6 +14,12 @@ import { redirect } from "next/navigation";
 import Chart from "./chart";
 import WaterLevelTable from "./table";
 import WaterLevelForm from "./water-level-form";
+
+
+import { Metadata } from "next";
+export const metadata: Metadata = {
+  title: "Biểu đồ",
+};
 
 export default async function BieuDo({
   params,

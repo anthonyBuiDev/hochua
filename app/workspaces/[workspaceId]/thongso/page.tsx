@@ -7,7 +7,12 @@ import { columns } from "./columns";
 
 import ParameterForm from "./parameters-form";
 
+import { Metadata } from "next";
 import { DataTable } from "./data-table";
+export const metadata: Metadata = {
+  title: "Thông số",
+};
+
 
 export default async function ThongSo({
   params,

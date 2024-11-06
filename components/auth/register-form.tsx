@@ -44,8 +44,9 @@ export const RegisterForm = () => {
   const handleForgotPassword = () => {
     setError("Liên hệ admin cấp lại mật khẩu");
   };
+
   const onSubmit = (values: z.infer<typeof RegisterSchema>) => {
-    console.log("before server action runs");
+    setError("");
     execute(values);
   };
 

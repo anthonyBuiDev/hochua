@@ -3,6 +3,7 @@ import { actionClient } from "@/lib/safe-action";
 import { RegisterSchema } from "@/types/register-schema";
 import bcrypt from "bcrypt";
 import { eq } from "drizzle-orm";
+import { revalidatePath } from "next/cache";
 import { db } from "..";
 import { users } from "../schema";
 
@@ -26,14 +27,24 @@ export const Register = actionClient
 
 
     const isFirstUser = await db.query.users.findMany();
-    const role = isFirstUser.length === 0 ? "admin" : "user";
-    const emailVerified = isFirstUser.length === 0 ? new Date() : null
+
+
+
+    if (isFirstUser.length === 0) {
+      await db.insert(users).values({
+        email,
+        name,
+        password: hashedPassword,
+        roles: "admin",
+        emailVerified: new Date()
+      });
+      revalidatePath("/auth/login");
+      return { success: "Đăng ký thành công" };
+    }
     await db.insert(users).values({
       email,
       name,
       password: hashedPassword,
-      roles: role,
-      emailVerified
     });
 
 

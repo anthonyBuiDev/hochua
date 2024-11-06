@@ -6,6 +6,11 @@ import { redirect } from "next/navigation";
 import WaterLevelDischargeForm from "./water-level-discharge-form";
 import WaterLevelTable from "./water-level-table";
 
+import { Metadata } from "next";
+export const metadata: Metadata = {
+  title: "V1 mở V2 mở",
+};
+
 
 export default async function momo({
   params,

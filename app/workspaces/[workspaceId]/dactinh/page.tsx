@@ -8,6 +8,10 @@ import { columns } from "./columns";
 import { DataTable } from "./data-table";
 import LakeCharacteristicForm from "./lake-characteristic-form";
 
+import { Metadata } from "next";
+export const metadata: Metadata = {
+  title: "Đặc tính",
+};
 
 export default async function DacTinh({
   params,

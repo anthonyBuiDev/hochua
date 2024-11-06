@@ -5,7 +5,7 @@ import { Metadata } from "next";
 import WorkspaceForm from "./workspace-form";
 
 export const metadata: Metadata = {
-  title: "Thêm hồ chauws",
+  title: "Thêm hồ chứa",
 };
 
 export default async function AddWorkspace() {

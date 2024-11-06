@@ -1,10 +1,10 @@
 import { db } from "@/server";
 import { auth } from "@/server/auth";
-import { Metadata } from "next";
 import { redirect } from "next/navigation";
 import { columns } from "./columns";
 import { DataTable } from "./data-table";
 
+import { Metadata } from "next";
 export const metadata: Metadata = {
   title: "Hồ chứa",
 };
