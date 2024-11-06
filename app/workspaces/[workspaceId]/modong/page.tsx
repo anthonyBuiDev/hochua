@@ -28,8 +28,6 @@ export default async function modong({
 
   if (!waters) throw new Error("Không tìm thấy thông số");
 
-  console.log(waters)
-
   return (
     <div className="w-full lg:max-w-7xl">
       <WaterLevelDischargeForm />

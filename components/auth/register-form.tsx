@@ -49,10 +49,9 @@ export const RegisterForm = () => {
 
   return (
     <AuthCard
-      cardTitle="Create an account 🎉"
+      cardTitle="Tạo tài khoản mới"
       backButtonHref="/auth/login"
-      backButtonLabel="Already have an account?"
-      showSocials
+      backButtonLabel="Bạn đã có tài khoản ?"
     >
       <div>
         <Form {...form}>
@@ -63,11 +62,10 @@ export const RegisterForm = () => {
                 name="name"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Username</FormLabel>
+                    <FormLabel>Tên người dùng</FormLabel>
                     <FormControl>
                       <Input
                         {...field}
-                        placeholder="developedbyed"
                         type="text"
                       />
                     </FormControl>
@@ -85,7 +83,7 @@ export const RegisterForm = () => {
                     <FormControl>
                       <Input
                         {...field}
-                        placeholder="developedbyed@gmail.com"
+
                         type="email"
                         autoComplete="email"
                       />
@@ -116,8 +114,8 @@ export const RegisterForm = () => {
               />
               <FormSuccess message={success} />
               <FormError message={error} />
-              <Button size={"sm"} variant={"link"} asChild>
-                <Link href="/auth/reset">Forgot your password</Link>
+              <Button size={"sm"} className="px-0" variant={"link"} onClick={() => setError("Liên hệ admin cấp lại mật khẩu")}>
+                Quên mật khẩu?
               </Button>
             </div>
             <Button
@@ -127,7 +125,7 @@ export const RegisterForm = () => {
                 status === "executing" ? "animate-pulse" : "",
               )}
             >
-              Register
+              Đăng kí
             </Button>
           </form>
         </Form>

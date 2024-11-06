@@ -29,7 +29,6 @@ export const settings = actionClient
       parsedInput.email = undefined;
       parsedInput.password = undefined;
       parsedInput.newPassword = undefined;
-      parsedInput.isTwoFactorEnabled = undefined;
     }
 
     if (parsedInput.password && parsedInput.newPassword && dbUser.password) {
@@ -54,7 +53,6 @@ export const settings = actionClient
     const updatedUser = await db
       .update(users)
       .set({
-        twoFactorEnabled: parsedInput.isTwoFactorEnabled,
         name: parsedInput.name,
         email: parsedInput.email,
         password: parsedInput.password,

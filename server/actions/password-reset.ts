@@ -1,32 +1,38 @@
 "use server";
 
 import { actionClient } from "@/lib/safe-action";
-import { ResetSchema } from "@/types/reset-schema";
+import { Pool } from "@neondatabase/serverless";
+import bcrypt from "bcrypt";
 import { eq } from "drizzle-orm";
+import { drizzle } from "drizzle-orm/neon-serverless";
+import { z } from "zod";
 import { db } from "..";
 import { users } from "../schema";
-import { sendPasswordResetEmail } from "./email";
-import { generatePasswordResetToken } from "./tokens";
 
 export const reset = actionClient
-  .schema(ResetSchema)
-  .action(async ({ parsedInput: { email } }) => {
+  .schema(z.object({ id: z.string() }))
+  .action(async ({ parsedInput: { id } }) => {
+    const pool = new Pool({ connectionString: process.env.POSTGRES_URL });
+    const dbPool = drizzle(pool);
     const existingUser = await db.query.users.findFirst({
-      where: eq(users.email, email),
+      where: eq(users.id, id),
     });
 
     if (!existingUser) {
       return { error: "User not found" };
     }
 
-    const passwordResetToken = await generatePasswordResetToken(email);
+    const hashedPassword = await bcrypt.hash("pass@123", 10);
 
-    if (!passwordResetToken) {
-      return { error: "Token not generated" };
-    }
-    await sendPasswordResetEmail(
-      passwordResetToken[0].email,
-      passwordResetToken[0].token,
-    );
+    await dbPool.transaction(async (tx) => {
+      await tx
+        .update(users)
+        .set({
+          password: hashedPassword,
+        })
+        .where(eq(users.id, existingUser.id));
+    });
+
+
     return { success: "Reset Email Sent" };
   });

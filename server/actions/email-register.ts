@@ -5,42 +5,36 @@ import bcrypt from "bcrypt";
 import { eq } from "drizzle-orm";
 import { db } from "..";
 import { users } from "../schema";
-import { sendVerificationEmail } from "./email";
-import { generateEmailVerificationToken } from "./tokens";
+
 
 export const emailRegister = actionClient
   .schema(RegisterSchema)
   .action(async ({ parsedInput: { email, name, password } }) => {
     const hashedPassword = await bcrypt.hash(password, 10);
-    console.log(hashedPassword);
+
     const existingUser = await db.query.users.findFirst({
       where: eq(users.email, email),
     });
 
     if (existingUser) {
       if (!existingUser.emailVerified) {
-        const verificationToken = await generateEmailVerificationToken(email);
-        await sendVerificationEmail(
-          verificationToken[0].email,
-          verificationToken[0].token,
-        );
-        return { success: "Email confirmation resent " };
+
+        return { success: "Chờ Admin kích hoạt" };
       }
-      return { error: "User already exists" };
+      return { error: "Tài khoản đã có" };
     }
-    //TODO: First user to be admin
+
+
+    const isFirstUser = await db.query.users.findMany();
+    const role = isFirstUser.length === 0 ? "admin" : "user";
+
     await db.insert(users).values({
       email,
       name,
       password: hashedPassword,
+      roles: role,
     });
 
-    const verificationToken = await generateEmailVerificationToken(email);
 
-    await sendVerificationEmail(
-      verificationToken[0].email,
-      verificationToken[0].token,
-    );
-
-    return { success: "Confirmation Email Sent!" };
+    return { success: "Chờ Admin kích hoạt" };
   });

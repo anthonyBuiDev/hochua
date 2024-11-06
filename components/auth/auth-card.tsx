@@ -13,7 +13,7 @@ type CardWrapperProps = {
   cardTitle: string;
   backButtonHref: string;
   backButtonLabel: string;
-  showSocials?: boolean;
+
 };
 
 export const AuthCard = ({
@@ -21,7 +21,7 @@ export const AuthCard = ({
   cardTitle,
   backButtonHref,
   backButtonLabel,
-  showSocials,
+
 }: CardWrapperProps) => {
   return (
     <div className="mx-auto max-w-2xl my-28  flex-grow px-6 md:px-12">
@@ -30,11 +30,7 @@ export const AuthCard = ({
           <CardTitle>{cardTitle}</CardTitle>
         </CardHeader>
         <CardContent>{children}</CardContent>
-        {showSocials && (
-          <CardFooter>
-            <Socials />
-          </CardFooter>
-        )}
+
         <CardFooter>
           <BackButton href={backButtonHref} label={backButtonLabel} />
         </CardFooter>

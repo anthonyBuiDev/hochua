@@ -1,7 +1,7 @@
 import DashboardNav from "@/components/navigation/dashboard-nav";
 import UserButton from "@/components/navigation/user-button";
 import { auth } from "@/server/auth";
-import { ArrowBigLeft, Factory, PenSquare, Settings } from "lucide-react";
+import { ArrowBigLeft, Factory, PenSquare, Settings, User } from "lucide-react";
 import Link from "next/link";
 
 export default async function DashboardLayout({
@@ -22,17 +22,22 @@ export default async function DashboardLayout({
   const adminLinks =
     session?.user?.roles === "admin"
       ? [
-          {
-            label: "Create",
-            path: "/dashboard/add-workspace",
-            icon: <PenSquare size={16} />,
-          },
-          {
-            label: "Workspaces",
-            path: "/dashboard/workspaces",
-            icon: <Factory size={16} />,
-          },
-        ]
+        {
+          label: "Tạo hồ chứa",
+          path: "/dashboard/add-workspace",
+          icon: <PenSquare size={16} />,
+        },
+        {
+          label: "Hồ chứa",
+          path: "/dashboard/workspaces",
+          icon: <Factory size={16} />,
+        },
+        {
+          label: "Người dùng",
+          path: "/dashboard/users",
+          icon: <User size={16} />,
+        },
+      ]
       : [];
 
   const allLinks = [...adminLinks, ...userLinks];

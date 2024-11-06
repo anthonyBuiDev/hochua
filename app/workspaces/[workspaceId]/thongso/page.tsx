@@ -18,7 +18,8 @@ export default async function ThongSo({
 
   if (!user) {
     redirect("/login");
-  } const workspaceId = (await params).workspaceId
+  }
+  const workspaceId = (await params).workspaceId
 
 
   const parametersList = await db.query.parameters.findMany({

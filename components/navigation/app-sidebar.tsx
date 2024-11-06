@@ -16,14 +16,7 @@ import { useWorkspaceId } from "@/hooks/use-workspace-id";
 import { Check, ChevronsUpDown, GalleryVerticalEnd } from "lucide-react";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
-import { useState } from "react";
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuTrigger,
-} from "../ui/dropdown-menu";
-import { FormControl } from "../ui/form";
+
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "../ui/select";
 
 const allLinks = [

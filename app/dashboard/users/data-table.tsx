@@ -59,14 +59,14 @@ export function DataTable<TData, TValue>({
     <div className="rounded-md border">
       <Card>
         <CardHeader>
-          <CardTitle>Hồ Chứa</CardTitle>
-          <CardDescription>Quản lý hồ chứa</CardDescription>
+          <CardTitle>Người dùng</CardTitle>
+          <CardDescription>Quản lý người dùng</CardDescription>
         </CardHeader>
         <CardContent>
           <div>
             <div>
               <Input
-                placeholder="Nhập tên hồ chứa để tìm"
+                placeholder="Nhập tên người dùng để tìm"
                 value={
                   (table.getColumn("name")?.getFilterValue() as string) ?? ""
                 }

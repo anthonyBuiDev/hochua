@@ -50,7 +50,6 @@ export default function SettingsCard(session: SettingsForm) {
       name: session.session.user?.name || undefined,
       email: session.session.user?.email || undefined,
       image: session.session.user?.image || undefined,
-      isTwoFactorEnabled: session.session.user?.isTwoFactorEnabled || undefined,
     },
   });
 
@@ -194,30 +193,6 @@ export default function SettingsCard(session: SettingsForm) {
                         status === "executing" || session?.session.user.isOAuth
                       }
                       {...field}
-                    />
-                  </FormControl>
-
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-            <FormField
-              control={form.control}
-              name="isTwoFactorEnabled"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Two Factor Authentication</FormLabel>
-                  <FormDescription>
-                    Enable two factor authentication for your account
-                  </FormDescription>
-                  <FormControl>
-                    <Switch
-                      disabled={
-                        status === "executing" ||
-                        session.session.user.isOAuth === true
-                      }
-                      checked={field.value}
-                      onCheckedChange={field.onChange}
                     />
                   </FormControl>
 
