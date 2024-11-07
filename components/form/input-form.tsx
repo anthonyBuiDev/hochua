@@ -12,32 +12,12 @@ import {
   FormMessage,
 } from "@/components/ui/form"
 import { Input } from "@/components/ui/input"
+import { characteristic, q } from "@/lib/infer-type"
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useRouter, useSearchParams } from 'next/navigation'
-import { useCallback } from 'react'
+import { useCallback, useMemo } from 'react'
 import { useForm } from 'react-hook-form'
 import * as z from 'zod'
-
-
-type DischargeRateData = {
-  dischargeRate: string | null;
-  waterLevel: string | null;
-  gateOpening: string | null;
-};
-
-type LakeCharacteristicData = {
-  elevation: string | null;
-  surfaceArea: string | null;
-  volume: string | null;
-};
-
-
-interface InputFormProps {
-  q1: DischargeRateData;
-  q2: DischargeRateData;
-  characteristic: LakeCharacteristicData;
-}
-
 
 const formSchema = z.object({
   elevation: z.string(),
@@ -54,19 +34,25 @@ const formSchema = z.object({
 
 })
 
+interface InputFormProps {
+  q1: q[];
+  q2: q[];
+  characteristic: characteristic[];
+}
 
-export default function InputForm({ q1, q2, characteristic }: InputFormProps) {
-
+export default function InputFormTest({ data }: { data: InputFormProps }) {
   const router = useRouter()
   const searchParams = useSearchParams()
-
+  const elevation = searchParams?.get('elevation') || '';
+  const a1 = searchParams?.get('a1') || '';
+  const a2 = searchParams?.get('a2') || '';
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      elevation: searchParams?.get('elevation') || '',
-      a1: searchParams?.get('a1') || '',
-      a2: searchParams?.get('a2') || '',
+      elevation,
+      a1,
+      a2,
     },
   })
 
@@ -84,16 +70,41 @@ export default function InputForm({ q1, q2, characteristic }: InputFormProps) {
   )
 
   function onSubmit(values: z.infer<typeof formSchema>) {
+
     const { elevation, a1, a2 } = values;
-    router.push(`?${createQueryString({ elevation, a1, a2 })}`)
+    if (elevation || a1 || a2) {
+      router.push(`?${createQueryString({ elevation, a1, a2 })}`)
+    }
   }
-  const sumQ = (q1?.dischargeRate && q2?.dischargeRate) ? (parseFloat(q1?.dischargeRate) + parseFloat(q2?.dischargeRate)).toString() : "Không có dữ liệu";
+
+
+  const filtered = useMemo(() => {
+
+    if (elevation || a1 || a2 && data) {
+      const characteristicItem = data?.characteristic?.find((item) => item.elevation === elevation);
+      const q1Item = data?.q1?.find((item) => item.waterLevel === elevation && item.gateOpening === a1);
+      const q2Item = data?.q2?.find((item) => item.waterLevel === elevation && item.gateOpening === a2);
+
+      return {
+        surfaceArea: characteristicItem?.surfaceArea || '',
+        volume: characteristicItem?.volume || '',
+        q1: q1Item?.dischargeRate || '',
+        q2: q2Item?.dischargeRate || '',
+        sumQ: (parseFloat(q1Item?.dischargeRate || '0') + parseFloat(q2Item?.dischargeRate || '0')).toString()
+      };
+    }
+    return {
+      surfaceArea: '',
+      volume: '',
+      q1: '',
+      q2: '',
+      sumQ: '',
+    };
+  }, [elevation, a1, a2, data]);
 
 
   return (
-
     <div className="flex justify-center items-center">
-
       <Form {...form}>
         <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8 max-w-7xl mx-auto p-4">
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
@@ -127,7 +138,7 @@ export default function InputForm({ q1, q2, characteristic }: InputFormProps) {
                           {...field}
                           readOnly
                           className="bg-gray-100 dark:bg-gray-600"
-                          defaultValue={characteristic?.surfaceArea || "Không có dữ liệu"}
+                          defaultValue={filtered?.surfaceArea}
                         />
                       </FormControl>
                       <FormDescription>Đơn vị: ha</FormDescription>
@@ -146,7 +157,7 @@ export default function InputForm({ q1, q2, characteristic }: InputFormProps) {
                           {...field}
                           readOnly
                           className="bg-gray-100 dark:bg-gray-600"
-                          defaultValue={characteristic?.volume || "Không có dữ liệu"}
+                          defaultValue={filtered?.volume}
                         />
                       </FormControl>
                       <FormDescription>Đơn vị: 106 m3</FormDescription>
@@ -246,7 +257,9 @@ export default function InputForm({ q1, q2, characteristic }: InputFormProps) {
                     <FormItem>
                       <FormLabel>3. Lưu lượng xả qua cửa số 1 (Q1)</FormLabel>
                       <FormControl>
-                        <Input {...field} readOnly className="bg-gray-100 dark:bg-gray-600" defaultValue={q1?.dischargeRate || "Không có dữ liệu"} />
+                        <Input {...field} readOnly className="bg-gray-100 dark:bg-gray-600"
+                          defaultValue={filtered?.q1}
+                        />
                       </FormControl>
                       <FormDescription>Đơn vị: m3/s</FormDescription>
                       <FormMessage />
@@ -260,7 +273,9 @@ export default function InputForm({ q1, q2, characteristic }: InputFormProps) {
                     <FormItem>
                       <FormLabel>4. Lưu lượng xả qua cửa số 2 (Q2)</FormLabel>
                       <FormControl>
-                        <Input {...field} readOnly className="bg-gray-100 dark:bg-gray-600" defaultValue={q2?.dischargeRate || "Không có dữ liệu"} />
+                        <Input {...field} readOnly className="bg-gray-100 dark:bg-gray-600"
+                          defaultValue={filtered?.q2}
+                        />
                       </FormControl>
                       <FormDescription>Đơn vị: m3/s</FormDescription>
                       <FormMessage />
@@ -274,7 +289,9 @@ export default function InputForm({ q1, q2, characteristic }: InputFormProps) {
                     <FormItem>
                       <FormLabel>5. Tổng lượng xả qua tràn (Q1+Q2)</FormLabel>
                       <FormControl>
-                        <Input {...field} readOnly className="bg-gray-100 dark:bg-gray-600" defaultValue={sumQ} />
+                        <Input {...field} readOnly className="bg-gray-100 dark:bg-gray-600"
+                          defaultValue={filtered?.sumQ}
+                        />
                       </FormControl>
                       <FormDescription>Đơn vị: m3/s</FormDescription>
                       <FormMessage />
@@ -284,9 +301,8 @@ export default function InputForm({ q1, q2, characteristic }: InputFormProps) {
               </CardContent>
             </Card>
           </div>
-
           <div className="flex justify-center">
-            <Button type="submit" size="lg">
+            <Button type="submit" size="lg" disabled={form.formState.isLoading}>
               Cập nhật thông số
             </Button>
           </div>

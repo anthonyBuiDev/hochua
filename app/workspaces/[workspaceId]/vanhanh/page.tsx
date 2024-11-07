@@ -1,5 +1,5 @@
+
 import InputForm from "@/components/form/input-form";
-import { Button } from "@/components/ui/button";
 import {
   Card,
   CardContent,
@@ -15,23 +15,14 @@ export const metadata: Metadata = {
   title: "Vận hành",
 };
 
-export default async function VanHanh({
-  searchParams,
-  params
-}: {
-  params: Promise<{ workspaceId: string }>
-  searchParams: Promise<{ [elevation: string]: string }>
-}) {
+export default async function VanHanh() {
   const user = await auth();
 
   if (!user) {
     redirect("/login");
   }
+  const data = await getData();
 
-  const { workspaceId } = await params;
-  const { elevation, a1, a2 } = await searchParams || "";
-
-  const data = await getData({ elevation, workspaceId, a1, a2 });
 
   return (
     <div className="w-full lg:max-w-7xl">
@@ -44,7 +35,7 @@ export default async function VanHanh({
             <CardDescription className="text-center text-red">{data.error && "Không tìm thấy thông số"}</CardDescription>
           </CardHeader>
           <CardContent>
-            <InputForm q1={data?.success?.q1!} q2={data?.success?.q2!} characteristic={data?.success?.characteristic!} />
+            <InputForm data={data?.success!} />
           </CardContent>
         </Card>
       </div>

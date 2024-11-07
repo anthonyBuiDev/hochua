@@ -28,7 +28,8 @@ export type InferResultType<
 
 export type Members = InferResultType<"members", { user: true }>;
 export type Parameters = InferResultType<"parameters">;
-
+export type characteristic = InferResultType<"lakeCharacteristics">;
+export type q = InferResultType<"waterLevelDischarges">;
 export type Workspaces = InferResultType<
   "workspaces",
   { members: { with: { user: true } }; workspaces: true }

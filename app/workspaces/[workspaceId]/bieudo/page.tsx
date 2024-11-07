@@ -58,8 +58,6 @@ export default async function BieuDo({
       mnlkt: 27.29
     }
   })
-
-  console.log(dataTable);
   return (
     <div className="w-full lg:max-w-7xl">
       <WaterLevelForm />

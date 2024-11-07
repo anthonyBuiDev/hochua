@@ -103,7 +103,6 @@ export const twoFactorTokens = pgTable(
 )
 
 
-
 export const workspaces = pgTable("workspaces", {
   id: text("id")
     .notNull()
