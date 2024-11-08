@@ -15,7 +15,7 @@ import { Input } from "@/components/ui/input"
 import { characteristic, q } from "@/lib/infer-type"
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useRouter, useSearchParams } from 'next/navigation'
-import { useCallback, useMemo } from 'react'
+import { useCallback, useMemo, useState } from 'react'
 import { useForm } from 'react-hook-form'
 import * as z from 'zod'
 
@@ -46,7 +46,7 @@ export default function InputFormTest({ data }: { data: InputFormProps }) {
   const elevation = searchParams?.get('elevation') || '';
   const a1 = searchParams?.get('a1') || '';
   const a2 = searchParams?.get('a2') || '';
-
+  const [isLoading, setIsLoading] = useState(false);
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -69,37 +69,52 @@ export default function InputFormTest({ data }: { data: InputFormProps }) {
     [searchParams]
   )
 
-  function onSubmit(values: z.infer<typeof formSchema>) {
-
-    const { elevation, a1, a2 } = values;
-    if (elevation || a1 || a2) {
-      router.push(`?${createQueryString({ elevation, a1, a2 })}`)
+  async function onSubmit(values: z.infer<typeof formSchema>) {
+    setIsLoading(true)
+    try {
+      const { elevation, a1, a2 } = values;
+      if (elevation || a1 || a2) {
+        await router.push(`?${createQueryString({ elevation, a1, a2 })}`)
+        await new Promise(resolve => setTimeout(resolve, 500))
+      }
+    } finally {
+      setIsLoading(false)
     }
   }
 
 
   const filtered = useMemo(() => {
-
-    if (elevation || a1 || a2 && data) {
-      const characteristicItem = data?.characteristic?.find((item) => item.elevation === elevation);
-      const q1Item = data?.q1?.find((item) => item.waterLevel === elevation && item.gateOpening === a1);
-      const q2Item = data?.q2?.find((item) => item.waterLevel === elevation && item.gateOpening === a2);
-
+    // Return early if no data or required params
+    if (!data || (!elevation && !a1 && !a2)) {
       return {
-        surfaceArea: characteristicItem?.surfaceArea || '',
-        volume: characteristicItem?.volume || '',
-        q1: q1Item?.dischargeRate || '',
-        q2: q2Item?.dischargeRate || '',
-        sumQ: (parseFloat(q1Item?.dischargeRate || '0') + parseFloat(q2Item?.dischargeRate || '0')).toString()
+        surfaceArea: '',
+        volume: '',
+        q1: '',
+        q2: '',
+        sumQ: ''
       };
     }
+
+    const characteristicItem = data.characteristic?.find(item => item.elevation === elevation);
+    const q1Item = data.q1?.find(item =>
+      item.waterLevel === elevation && item.gateOpening === a1
+    );
+    const q2Item = data.q2?.find(item =>
+      item.waterLevel === elevation && item.gateOpening === a2
+    );
+
+    const q1Rate = q1Item?.dischargeRate || '0';
+    const q2Rate = q2Item?.dischargeRate || '0';
+    const totalDischarge = (parseFloat(q1Rate) + parseFloat(q2Rate)).toString();
+
     return {
-      surfaceArea: '',
-      volume: '',
-      q1: '',
-      q2: '',
-      sumQ: '',
+      surfaceArea: characteristicItem?.surfaceArea || '',
+      volume: characteristicItem?.volume || '',
+      q1: q1Rate,
+      q2: q2Rate,
+      sumQ: totalDischarge
     };
+
   }, [elevation, a1, a2, data]);
 
 
@@ -251,6 +266,7 @@ export default function InputFormTest({ data }: { data: InputFormProps }) {
                   )}
                 />
                 <FormField
+
                   control={form.control}
                   name="q1"
                   render={({ field }) => (
@@ -302,10 +318,19 @@ export default function InputFormTest({ data }: { data: InputFormProps }) {
             </Card>
           </div>
           <div className="flex justify-center">
-            <Button type="submit" size="lg" disabled={form.formState.isLoading}>
-              Cập nhật thông số
+            <Button type="submit" size="lg" className="" disabled={isLoading}>
+              {isLoading ? (
+                <>
+                  <span className="mr-2">Đang xử lý...</span>
+                  <div className="h-4 w-4 animate-spin rounded-full border-2 border-white border-t-transparent" />
+                </>
+              ) : (
+                'Cập nhật thông số'
+              )}
             </Button>
+
           </div>
+
         </form>
       </Form>
     </div>
